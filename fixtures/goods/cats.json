@@ -9,7 +9,7 @@
   },
   {
     "model": "goods.categories",
-    "pk": 5,ma
+    "pk": 5,
     "fields": {
       "name": "Кухня",
       "slug": "kuhnya"
