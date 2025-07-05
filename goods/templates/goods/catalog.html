@@ -44,6 +44,13 @@
                 </form>
             </div>
 
+        {% if request.GET.q %}
+        <h3 class="mt-4">Результат поиска по запросу {{ request.GET.q }}</h3>
+        {% if not goods %}
+            <h2 class="mt-4">По запросу ничего не найдено</h2>
+        {% endif %}
+        {% endif %}
+
 
         {% for product in goods %}
         	
@@ -59,9 +66,25 @@
                                 {% endif %}
                                 <div class="card-body">
                                     <a href="{% url "catalog:product" product.slug %}">
-                                        <p class="card-title">{{ product.name }}</p>
+                                        <p class="card-title">
+                                            {% autoescape off %}
+                                                {% if product.headline %}
+                                                    {{product.headline}}
+                                                {% else %}
+                                                    {{product.name}}
+                                                {% endif %}
+                                            {% endautoescape %}
+                                        </p>
                                     </a>
-                                    <p class="card-text">{{ product.description|truncatechars:35 }}</p>
+                                    <p class="card-text">
+                                         {% autoescape off %}
+                                                {% if product.bodyline %}
+                                                {{product.bodyline|truncatechars:100 }}
+                                                {% else %}
+                                                {{product.description|truncatechars:35 }}
+                                                {% endif %}
+                                         {% endautoescape %}
+                                    </p>
                                     <p class="product_id">id: {{ product.display_id }}</p>
                                     <div class="d-flex justify-content-between">
                                         {% if product.discount %}
@@ -81,8 +104,9 @@
                         </div>
         {% endfor %}
                     </div>
-                    <!-- Пагинация -->
-                    <nav aria-label="Page navigation example">
+
+                    {% if goods %}
+                    	<nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center my-4">
                             <div class="custom-shadow d-flex">
                                 <li class="page-item {% if not goods.has_previous %}disabled{% endif %}">
@@ -101,6 +125,11 @@
                             </div>
                         </ul>
                     </nav>
+                    {% endif %}
+
+                    {% if not goods %}
+                        <nav aria-label="Page navigation example"></nav>>
+                    {% endif %}
 {% endblock %}
 
 
