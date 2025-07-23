@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="{% static "deps/css/my_footer_css.css" %}">
 {% endblock %}
 
+{% block modal_cart %}
+	{% include "includes/cart_button.html" %}
+{% endblock %}
+
 {% block content %}
 	<h1 class="mt-5 pt-5"><strong>{{ content }}</strong></h1>
 {% endblock %}
@@ -12,7 +16,7 @@
 {% block footer %}
 	    <footer class="py-4 bg-dark">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Home Python Hub Studio 2023</p>
+            <p class="m-0 text-center text-white">Bohdan Kukuruza</p>
         </div>
     </footer>
 {% endblock %}
