@@ -17,7 +17,7 @@ class Cart(models.Model):
     user = models.ForeignKey(to=User, blank=True, null=True, on_delete=models.CASCADE, verbose_name='Пользователь')
     product = models.ForeignKey(to=Product, on_delete=models.CASCADE, verbose_name='Продукт')
     quantity = models.PositiveSmallIntegerField(default=0.0, verbose_name='Количество')
-    session_key = models.CharField(blank=True, null=True, max_length=12)
+    session_key = models.CharField(blank=True, null=True, max_length=40)
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
 
     class Meta:
