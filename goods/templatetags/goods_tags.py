@@ -2,7 +2,7 @@ from urllib.parse import urlencode
 
 from django import template
 
-from goods.views import Categories
+from goods.models import Categories
 from django.utils.http import urlencode
 
 register = template.Library()
