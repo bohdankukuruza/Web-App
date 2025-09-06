@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load socialaccount %}
 
 {% block css %}
     <style>
@@ -208,7 +209,7 @@
             <p class="auth-social-heading">Или войдите через</p>
 
             <div class="social-login-buttons">
-                <a href="#" class="btn">
+                <a href="{% provider_login_url 'google' %}" class="btn">
                     <img src="{% static "deps/icons/google.svg" %}" alt="Google icon">
                     Google
                 </a>
