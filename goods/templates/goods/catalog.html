@@ -1,0 +1,337 @@
+{% extends "base.html" %}
+{% load static %}
+{% load goods_tags %}
+
+{% block css %}
+<style>
+    /* Основной макет страницы каталога */
+    .catalog-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px; /* Отступ между товарами и фильтрами */
+    }
+
+    /* Основной контент с товарами (левая часть) */
+    .products-grid {
+        flex: 1;
+        min-width: 70%;
+    }
+
+    /* Сайдбар с фильтрами (правая часть) */
+    .filters-sidebar {
+        width: 100%;
+        max-width: 280px; /* Фиксированная ширина для сайдбара на больших экранах */
+        background-color: #f9f9f9;
+        padding: 25px;
+        border-radius: 12px;
+        border: 1px solid #eee;
+        height: fit-content; /* Высота по содержимому */
+    }
+
+    .filters-sidebar h4 {
+        font-weight: 600;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .filters-sidebar .form-check {
+        margin-bottom: 10px;
+    }
+
+    .filters-sidebar .btn-primary {
+        width: 100%;
+        background-color: #556B2F; /* Оливковый цвет, как мы обсуждали */
+        border: none;
+        padding: 10px;
+        font-weight: 600;
+    }
+    .filters-sidebar .btn-primary:hover {
+        background-color: #445625;
+    }
+
+    /* Новый дизайн карточки товара */
+    .product-card {
+        background-color: #fff;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        position: relative; /* Для позиционирования скидки */
+        overflow: hidden; /* Скрываем все, что выходит за рамки */
+    }
+
+    .product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-card .card-img-top {
+        border-radius: 12px 12px 0 0;
+        max-height: 250px;
+        object-fit: cover;
+    }
+
+    .product-card .card-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .product-card .card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .product-card a {
+        text-decoration: none;
+    }
+
+    .product-card .card-text {
+        color: #666;
+        flex-grow: 1;
+        margin-bottom: 15px;
+    }
+
+    .product-card .product-price {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .product-card .old-price {
+        font-size: 1rem;
+        color: #999;
+        text-decoration: line-through;
+        margin-right: 10px;
+    }
+
+    /* Новый стильный значок скидки */
+    .discount-badge {
+        position: absolute;
+        top: 15px;
+        right: -1px;
+        background-color: #c7a159; /* Золотой цвет */
+        color: white;
+        padding: 6px 15px 6px 20px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 20px 0 0 20px;
+        box-shadow: -2px 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* Адаптивность */
+    @media (max-width: 992px) {
+        .filters-sidebar {
+            max-width: 100%;
+            order: -1; /* На мобильных фильтры будут сверху */
+        }
+        .catalog-container {
+            flex-direction: column;
+        }
+    }
+
+</style>
+{% endblock %}
+
+
+{% block modal_cart %}
+	{% include "includes/cart_button.html" %}
+{% endblock %}
+
+{% block content %}
+        <div class="container my-5">
+        <div class="catalog-container">
+
+            <div class="products-grid">
+                {% if request.GET.q %}
+                    <h3 class="mb-4">Результат поиска по запросу "{{ request.GET.q }}"</h3>
+                    {% if not goods %}
+                        <h4 class="text-center">По вашему запросу ничего не найдено.</h4>
+                    {% endif %}
+                {% endif %}
+
+                <div class="row">
+                    {% for product in goods %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="product-card">
+                            {% if product.discount %}
+                            <div class="discount-badge">Скидка {{ product.discount }}%</div>
+                            {% endif %}
+
+                            <a href="{% url "catalog:product" product.slug %}">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                                {% else %}
+                                    <img src="{% static 'deps/images/Not found image.png' %}" class="card-img-top" alt="Изображение отсутствует">
+                                {% endif %}
+                            </a>
+
+                            <div class="card-body">
+                                <a href="{% url "catalog:product" product.slug %}">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                </a>
+                                <p class="card-text">{{ product.description|truncatechars:70 }}</p>
+
+                                <div class="mt-auto d-flex justify-content-between align-items-center">
+                                    <div class="product-price">
+                                        {% if product.discount %}
+                                            <span class="old-price">{{ product.price|floatformat:2 }} $</span>
+                                            <strong>{{ product.sell_price|floatformat:2 }} $</strong>
+                                        {% else %}
+                                            <strong>{{ product.price|floatformat:2 }} $</strong>
+                                        {% endif %}
+                                    </div>
+                                    <a href="{% url 'cart:cart_add' %}" class="btn add-to-cart" data-product-id="{{ product.id }}">
+                                        <img src="{% static "deps/icons/cart-plus.svg" %}" alt="Добавить в корзину" width="28" height="28">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if goods %}
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center my-4">
+                        <li class="page-item {% if not goods.has_previous %}disabled{% endif %}">
+                            <a class="page-link" href="{% if goods.has_previous %}?{% change_params page=goods.previous_page_number %}{% else %}#{% endif %}">Назад</a>
+                        </li>
+                        {% for page in goods.paginator.page_range %}
+                            {% if page >= goods.number|add:-2 and page <= goods.number|add:2 %}
+                                <li class="page-item {% if goods.number == page %} active {% endif %}">
+                                    <a class="page-link" href="?{% change_params page=page %}">{{ page }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                        <li class="page-item {% if not goods.has_next %}disabled{% endif %}">
+                            <a class="page-link" href="{% if goods.has_next %}?{% change_params page=goods.next_page_number %}{% else %}#{% endif %}">Вперед</a>
+                        </li>
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
+
+            <aside class="filters-sidebar">
+                <h4>Фильтры</h4>
+                <form id="filtersForm" action="{% if request.GET.q %}{% url "catalog:search" %}{% else %}{% url "catalog:index" slug_url %}{% endif %}" method="get">
+                    {% csrf_token %}
+                    {% if request.GET.q %}
+                        <input type="hidden" name="q" value="{{ request.GET.q }}">
+                    {% endif %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="on_sale" id="onSaleCheck" value="on" {% if request.GET.on_sale == "on" %}checked{% endif %}>
+                        <label class="form-check-label" for="onSaleCheck">Товары по акции</label>
+                    </div>
+
+                    <hr>
+
+                    <p class="mt-3 fw-bold">Сортировать:</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="order_by" id="orderDefault" value="default" {% if not request.GET.order_by or request.GET.order_by == 'default' %}checked{% endif %}>
+                        <label class="form-check-label" for="orderDefault">По умолчанию</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="order_by" id="orderAsc" value="price" {% if request.GET.order_by == 'price' %}checked{% endif %}>
+                        <label class="form-check-label" for="orderAsc">От дешевых к дорогим</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="order_by" id="orderDesc" value="-price" {% if request.GET.order_by == '-price' %}checked{% endif %}>
+                        <label class="form-check-label" for="orderDesc">От дорогих к дешевым</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Применить</button>
+                </form>
+            </aside>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+  <footer class="site-footer">
+    <div class="container">
+        <div class="footer-main">
+            <div class="footer-column">
+                <h4>Помощь</h4>
+                <ul>
+                    <li><a href="#">Оформление заказа</a></li>
+                    <li><a href="#">Доставка и оплата</a></li>
+                    <li><a href="#">Возврат товаров</a></li>
+                    <li><a href="#">Конфиденциальность и защита информации</a></li>
+                    <li><a href="#">Договор оферты</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Программа лояльности</h4>
+                <ul>
+                    <li><a href="#">Программа лояльности ARYA home</a></li>
+                    <li><a href="#">Подарочные карты</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Компания</h4>
+                <ul>
+                    <li><a href="#">О компании</a></li>
+                    <li><a href="#">Новости</a></li>
+                    <li><a href="#">Вакансии</a></li>
+                    <li><a href="#">Сотрудничество</a></li>
+                    <li><a href="#">Салоны ARYA home</a></li>
+                    <li><a href="#">Контакты</a></li>
+                    <li><a href="#">События</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Каталог</h4>
+                <ul>
+                    <li><a href="#">Постельное белье</a></li>
+                    <li><a href="#">Товары для ванной</a></li>
+                    <li><a href="#">Одежда для дома</a></li>
+                    <li><a href="#">Ароматы для дома</a></li>
+                    <li><a href="#">Посуда и приборы</a></li>
+                    <li><a href="#">Финальные Цены</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <a href="#" class="footer-subscribe-btn">
+                    <span>Подписаться на рассылку</span>
+                    <i class="fas fa-paper-plane"></i>
+                </a>
+                <div class="footer-contacts">
+                    <p><i class="fas fa-phone-alt"></i> 8 (800) 200-82-80</p>
+                    <p><i class="fas fa-envelope"></i> info@aryahome.ru</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-socials">
+            <a href="#" aria-label="VK"><i class="fab fa-vk"></i></a>
+            <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+            <a href="#" aria-label="Odnoklassniki"><i class="fab fa-odnoklassniki"></i></a>
+            <a href="#" aria-label="Zen"><i class="fab fa-yandex"></i></a> </div>
+
+        <div class="footer-legal">
+            <p>2025 © «Все права защищены. Treasure Chest»</p>
+            <p>Информация на сайте не является публичной офертой; финальную цену и характеристики товара уточняйте у менеджера интернет-магазина при оформлении заказа.</p>
+        </div>
+    </div>
+</footer>
+
+<a href="#" id="back-to-top" class="back-to-top-btn" aria-label="Вернуться наверх">
+    <i class="fas fa-arrow-up"></i>
+</a>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,166 @@
+/* --- Стили для футера --- */
+
+/* Основной контейнер футера */
+.site-footer {
+    background-color: #f9f9f9;
+    padding: 60px 0 20px 0;
+    color: #555;
+    font-family: 'Arial', sans-serif;
+    border-top: 1px solid #eee;
+}
+
+.site-footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Сетка для основного контента футера */
+.footer-main {
+    display: grid;
+    /* Создаем 5 колонок, которые будут адаптироваться */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.footer-column h4 {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 12px;
+}
+
+.footer-column ul li a {
+    color: #555;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-column ul li a:hover {
+    color: #000;
+}
+
+/* Стили для колонки с контактами */
+.footer-subscribe-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.3s ease;
+    margin-bottom: 25px;
+}
+
+.footer-subscribe-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.footer-contacts p {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.footer-contacts i {
+    margin-right: 12px;
+    font-size: 14px;
+    color: #888;
+}
+
+/* Блок с иконками соцсетей */
+.footer-socials {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.footer-socials a {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    color: #888;
+    margin: 0 8px;
+    transition: all 0.3s ease;
+}
+
+.footer-socials a:hover {
+    background-color: #333;
+    color: #fff;
+    border-color: #333;
+}
+
+/* Нижняя строка с копирайтом */
+.footer-legal {
+    text-align: center;
+    font-size: 12px;
+    color: #999;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.footer-legal p {
+    margin: 0 0 5px 0;
+    line-height: 1.6;
+}
+
+/* --- Стили для кнопки "Наверх" --- */
+.back-to-top-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex; /* Для центрирования иконки */
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background-color: #c7a159; /* Золотистый цвет, как в примере */
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    opacity: 0; /* Скрыта по умолчанию */
+    visibility: hidden;
+    transition: opacity 0.4s, visibility 0.4s;
+    z-index: 1000;
+}
+
+.back-to-top-btn.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.back-to-top-btn:hover {
+    background-color: #b38f4d;
+}
+
+/* Медиа-запрос для мобильных устройств */
+@media (max-width: 768px) {
+    .footer-main {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 20px;
+    }
+    .footer-column h4 {
+        font-size: 13px;
+    }
+}

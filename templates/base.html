@@ -1,0 +1,189 @@
+{% load static %}
+{% load goods_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{% static 'deps/css/bootstrap/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'deps/css/my_css.css' %}">
+    <link rel="stylesheet" href="{% static 'deps/css/my_footer_css.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+
+    {% block css %}
+    {% endblock %}
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'deps/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'deps/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'deps/favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'deps/favicon/site.webmanifest' %}">
+
+    <title>{{ title }}</title>
+</head>
+
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+            <div class="top-bar-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+353 857839331</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>42 O'Connell Street, Dublin, Ireland</span>
+                    </div>
+                </div>
+                <div class="user-actions">
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'user:login' %}" class="action-btn">
+                            <i class="fas fa-sign-in-alt"></i> Войти
+                        </a>
+                        <a href="#" class="action-btn">
+                            <i class="fas fa-user-plus"></i> Регистрация
+                        </a>
+                    {% else %}
+                        <div class="dropdown header-dropdown">
+                            <button class="action-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user"></i> {{ user.username }}
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'user:profile' %}">
+                                    <i class="fas fa-user-circle"></i> Личный кабинет
+                                </a></li>
+                                <li><a class="dropdown-item" href="{% url 'user:users_cart' %}">
+                                    <i class="fas fa-shopping-bag"></i> Моя корзина
+                                </a></li>
+                                {% if user.is_admin or user.is_staff %}
+                                    <li><a class="dropdown-item" href="{% url 'admin:index' %}">
+                                        <i class="fas fa-cog"></i> Админ панель
+                                    </a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'user:logout' %}">
+                                    <i class="fas fa-sign-out-alt"></i> Выйти
+                                </a></li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="main-header">
+            <div class="header-content">
+                <!-- Logo Section -->
+                <div class="logo-section">
+                    <img src="{% static 'deps/images/corn-logo.png' %}" alt="Corn Logo" class="corn-logo">
+                    <a href="{% url 'main:index' %}" class="brand-name">Treasure Chest</a>
+                </div>
+
+                <!-- Navigation -->
+                <nav class="main-nav">
+                    <div class="dropdown header-dropdown">
+                        <button class="catalog-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-th-large"></i> Каталог
+                        </button>
+                        <ul class="dropdown-menu">
+                            {% tag_categories as categories %}
+                            {% for category in categories %}
+                                <li><a class="dropdown-item" href="{% url 'catalog:index' category.slug %}">
+                                    {{ category.name }}
+                                </a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <a href="{% url 'main:index' %}" class="nav-link-custom">Главная</a>
+                    <a href="{% url 'main:about' %}" class="nav-link-custom">О нас</a>
+                    <a href="#" class="nav-link-custom">Доставка</a>
+                    <a href="#" class="nav-link-custom">Контакты</a>
+                </nav>
+
+                <!-- Search and Cart -->
+                <div class="search-section">
+                    <form class="search-bar" action="{% url 'catalog:search' %}" method="get">
+                        <input type="text" name="q" placeholder="Поиск товаров...">
+                        <button type="submit" class="search-btn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+
+                    {% load carts_tags %}
+                    {% user_carts request as carts %}
+                    <button type="button" class="cart-wrapper-btn" id="modalButton"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <i class="fas fa-shopping-cart cart-icon"></i>
+                        <span class="cart-count" id="goods-in-cart-count">{{ carts.total_quantity|default:0 }}</span>
+                    </button>
+                </div>
+            </div>
+    </header>
+
+    <!-- Модальное окно корзины -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h3 class="text-center mb-4">Корзина</h3>
+                    <div class="container" id="cart-items-container">
+                        <!-- Разметка корзины -->
+                        {% include "carts/includes/included_cart.html" %}
+                        <!-- Закончилась разметка корзины -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Section -->
+    <section>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    {% include "includes/notification.html" %}
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+
+    </section>
+
+    <!-- Footer -->
+    {% block footer %}
+    {% endblock %}
+
+    <!-- Scripts -->
+    <script src="{% static 'deps/js/jquery/jquery-3.7.0.min.js' %}"></script>
+    <script src="{% static 'deps/js/jquery-ajax.js' %}"></script>
+    <script src="{% static 'deps/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script>
+    const backToTopButton = document.getElementById('back-to-top');
+
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) { // Показать кнопку после прокрутки на 300px
+            backToTopButton.classList.add('show');
+        } else {
+            backToTopButton.classList.remove('show');
+        }
+    });
+
+    backToTopButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    </script>
+</body>
+</html>

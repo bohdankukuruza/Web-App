@@ -15,10 +15,81 @@
     <p>{{ text_on_page }}</p>
 {% endblock %}
 
+
 {% block footer %}
-	    <footer class="py-4 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Home Python Hub Studio 2023</p>
+  <footer class="site-footer">
+    <div class="container">
+        <div class="footer-main">
+            <div class="footer-column">
+                <h4>Помощь</h4>
+                <ul>
+                    <li><a href="#">Оформление заказа</a></li>
+                    <li><a href="#">Доставка и оплата</a></li>
+                    <li><a href="#">Возврат товаров</a></li>
+                    <li><a href="#">Конфиденциальность и защита информации</a></li>
+                    <li><a href="#">Договор оферты</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Программа лояльности</h4>
+                <ul>
+                    <li><a href="#">Программа лояльности ARYA home</a></li>
+                    <li><a href="#">Подарочные карты</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Компания</h4>
+                <ul>
+                    <li><a href="#">О компании</a></li>
+                    <li><a href="#">Новости</a></li>
+                    <li><a href="#">Вакансии</a></li>
+                    <li><a href="#">Сотрудничество</a></li>
+                    <li><a href="#">Салоны ARYA home</a></li>
+                    <li><a href="#">Контакты</a></li>
+                    <li><a href="#">События</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Каталог</h4>
+                <ul>
+                    <li><a href="#">Постельное белье</a></li>
+                    <li><a href="#">Товары для ванной</a></li>
+                    <li><a href="#">Одежда для дома</a></li>
+                    <li><a href="#">Ароматы для дома</a></li>
+                    <li><a href="#">Посуда и приборы</a></li>
+                    <li><a href="#">Финальные Цены</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <a href="#" class="footer-subscribe-btn">
+                    <span>Подписаться на рассылку</span>
+                    <i class="fas fa-paper-plane"></i>
+                </a>
+                <div class="footer-contacts">
+                    <p><i class="fas fa-phone-alt"></i> 8 (800) 200-82-80</p>
+                    <p><i class="fas fa-envelope"></i> info@aryahome.ru</p>
+                </div>
+            </div>
         </div>
-    </footer>
+
+        <div class="footer-socials">
+            <a href="#" aria-label="VK"><i class="fab fa-vk"></i></a>
+            <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+            <a href="#" aria-label="Odnoklassniki"><i class="fab fa-odnoklassniki"></i></a>
+            <a href="#" aria-label="Zen"><i class="fab fa-yandex"></i></a> </div>
+
+        <div class="footer-legal">
+            <p>2025 © «Все права защищены. Treasure Chest»</p>
+            <p>Информация на сайте не является публичной офертой; финальную цену и характеристики товара уточняйте у менеджера интернет-магазина при оформлении заказа.</p>
+        </div>
+    </div>
+</footer>
+
+<a href="#" id="back-to-top" class="back-to-top-btn" aria-label="Вернуться наверх">
+    <i class="fas fa-arrow-up"></i>
+</a>
 {% endblock %}

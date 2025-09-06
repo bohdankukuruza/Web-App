@@ -212,3 +212,68 @@ $(document).ready(function () {
         }
     });
 });
+
+// --- Код для динамического обновления корзины ---
+
+$(document).ready(function () {
+
+    // Функция для получения CSRF-токена из cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    // Делегирование событий для кнопок корзины
+    $(document).on('click', '.decrement, .increment, .remove-from-cart', function (e) {
+
+        e.preventDefault();
+
+        const $this = $(this);
+        const cartId = $this.data('cart-id');
+        const url = $this.data('cart-change-url') || $this.attr('href');
+
+        let action;
+        if ($this.hasClass('increment')) {
+            action = 'add';
+        } else if ($this.hasClass('decrement')) {
+            action = 'remove';
+        } else {
+            action = 'delete';
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            headers: {
+                'X-CSRFToken': csrftoken
+            },
+            data: JSON.stringify({
+                cart_id: cartId,
+                action: action
+            }),
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.success) {
+                    // Обновляем HTML-содержимое корзины
+                    $('#cart-items-container').html(data.cart_items_html);
+                    // Обновляем счетчик в шапке сайта
+                    $('#goods-in-cart-count').text(data.cart_total_quantity);
+                }
+            },
+            error: function (error) {
+                console.log('Ошибка AJAX:', error);
+            }
+        });
+    });
+});

@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <style>
+        /* Custom Styles for Auth Forms */
+    body {
+        background-color: #f8f8f8; /* Легкий фон для страницы */
+    }
+
+    .auth-container {
+        padding: 60px 0; /* Отступы сверху и снизу */
+    }
+
+    .auth-form-card {
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        max-width: 500px; /* Ограничиваем ширину формы */
+        margin: auto; /* Центрируем форму */
+    }
+
+    .auth-form-card h2 {
+        font-size: 32px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: #555;
+        margin-bottom: 8px;
+        display: block; /* Важно для отступов */
+    }
+
+    .form-control {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 16px;
+        box-shadow: none; /* Убираем стандартную тень Bootstrap */
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #c7a159; /* Золотистый акцент при фокусе */
+        box-shadow: 0 0 0 0.2rem rgba(199, 161, 89, 0.25); /* Легкая тень при фокусе */
+    }
+
+    .btn-primary-custom {
+        background-color: #c7a159; /* Золотистый цвет для основной кнопки */
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 25px;
+        font-size: 18px;
+        font-weight: 600;
+        width: 100%; /* Занимаем всю ширину */
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-primary-custom:hover {
+        background-color: #b38f4d; /* Темнее при наведении */
+        transform: translateY(-2px);
+        color: white; /* Убедимся, что цвет текста остается белым */
+    }
+
+    .auth-links {
+        text-align: center;
+        margin-top: 25px;
+        font-size: 15px;
+    }
+
+    .auth-links a {
+        color: #888;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .auth-links a:hover {
+        color: #c7a159;
+    }
+
+    .auth-links span {
+        color: #bbb;
+        margin: 0 10px;
+    }
+
+    .auth-social-heading {
+        text-align: center;
+        color: #777;
+        margin: 30px 0 20px 0;
+        position: relative;
+    }
+
+    .auth-social-heading::before,
+    .auth-social-heading::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        width: 35%; /* Ширина линии */
+        height: 1px;
+        background-color: #eee;
+    }
+
+    .auth-social-heading::before {
+        left: 0;
+    }
+
+    .auth-social-heading::after {
+        right: 0;
+    }
+
+    .social-login-buttons {
+        display: flex;
+        flex-wrap: wrap; /* Для переноса кнопок на новую строку */
+        justify-content: center;
+        gap: 15px; /* Отступы между кнопками */
+    }
+
+    .social-login-buttons .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f0f2f5; /* Светлый фон для социальных кнопок */
+        color: #555;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .social-login-buttons .btn:hover {
+        background-color: #e0e2e5;
+        border-color: #c7a159;
+        color: #333;
+    }
+
+    .social-login-buttons .btn img {
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Адаптивность для маленьких экранов */
+    @media (max-width: 576px) {
+        .auth-form-card {
+            padding: 25px;
+            margin: 0 15px;
+        }
+        .auth-form-card h2 {
+            font-size: 26px;
+        }
+        .social-login-buttons .btn {
+            width: 100%; /* Кнопки соцсетей на всю ширину на очень маленьких экранах */
+        }
+    }
+    </style>
+{% endblock %}
+
+
+{% block modal_cart %}
+	{% include "includes/cart_button.html" %}
+{% endblock %}
+
+{% block content %}
+     <div class="auth-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 auth-form-card">
+            <h2 class="text-center">Вход в аккаунт</h2>
+            <form action="{% url 'user:login' %}" method="post">
+                {% csrf_token %}
+                {% if request.GET.next %}
+                    <input type="hidden" name="next" value="{{request.GET.next}}">
+                {% endif %}
+
+                <div class="mb-3">
+                    <label for="id_username" class="form-label">Имя пользователя</label>
+                    <input type="text" class="form-control"
+                           value="{% if form.username.value %}{{ form.username.value }}{% endif %}"
+                           name="username" id="id_username" placeholder="Введите ваше имя пользователя" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_password" class="form-label">Пароль</label>
+                    <input type="password" class="form-control" name="password" id="id_password" placeholder="Введите ваш пароль" required>
+                </div>
+
+                {% if form.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        Неверное имя пользователя или пароль.
+                    </div>
+                {% endif %}
+
+                <button type="submit" class="btn btn-primary-custom mt-3">Войти</button>
+            </form>
+
+            <div class="auth-links">
+                <a href="#">Забыли пароль?</a> <span>|</span> <a href="{% url "user:registration" %}">Создать аккаунт</a>
+            </div>
+
+            <p class="auth-social-heading">Или войдите через</p>
+
+            <div class="social-login-buttons">
+                <a href="#" class="btn">
+                    <img src="{% static "deps/icons/google.svg" %}" alt="Google icon">
+                    Google
+                </a>
+                <a href="#" class="btn">
+                    <img src="{% static "deps/icons/facebook.svg" %}" alt="Facebook icon">
+                    Facebook
+                </a>
+                <a href="#" class="btn">
+                    <img src="{% static "deps/icons/github.svg" %}" alt="GitHub icon">
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
