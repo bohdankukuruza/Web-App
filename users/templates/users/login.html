@@ -203,7 +203,7 @@
             </form>
 
             <div class="auth-links">
-                <a href="#">Забыли пароль?</a> <span>|</span> <a href="{% url "user:registration" %}">Создать аккаунт</a>
+                <a href="{% url 'account_reset_password' %}">Забыли пароль?</a> <span>|</span> <a href="{% url "user:registration" %}">Создать аккаунт</a>
             </div>
 
             <p class="auth-social-heading">Или войдите через</p>
@@ -212,14 +212,6 @@
                 <a href="{% provider_login_url 'google' %}" class="btn">
                     <img src="{% static "deps/icons/google.svg" %}" alt="Google icon">
                     Google
-                </a>
-                <a href="#" class="btn">
-                    <img src="{% static "deps/icons/facebook.svg" %}" alt="Facebook icon">
-                    Facebook
-                </a>
-                <a href="#" class="btn">
-                    <img src="{% static "deps/icons/github.svg" %}" alt="GitHub icon">
-                    GitHub
                 </a>
             </div>
         </div>

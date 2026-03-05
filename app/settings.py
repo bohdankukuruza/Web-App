@@ -69,7 +69,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 ACCOUNT_EMAIL_VERIFICATION = "none"
 LOGIN_REDIRECT_URL = '/' # URL для перенаправления после успешного входа
-
+SOCIALACCOUNT_LOGIN_ON_GET = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -178,4 +178,17 @@ LOGIN_URL = '/user/login/'
 STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 STRIPE_API_VERSION = config('STRIPE_API_VERSION')
+
+
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 

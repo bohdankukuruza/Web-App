@@ -1,6 +1,20 @@
 // Когда html документ готов (прорисован)
 $(document).ready(function () {
     // берем в переменную элемент разметки с id jq-notification для оповещений от ajax
+
+    function updateCartUI(data) {
+        if ($("#cart-items-container-modal").length && data.cart_items_html_modal !== undefined) {
+            $("#cart-items-container-modal").html(data.cart_items_html_modal);
+          }
+        if ($("#cart-items-container-page").length && data.cart_items_html_page !== undefined) {
+            $("#cart-items-container-page").html(data.cart_items_html_page);
+          }
+        if (data.cart_total_quantity !== undefined) {
+            $("#goods-in-cart-count").text(data.cart_total_quantity);
+          }
+        }
+
+
     var successMessage = $("#jq-notification");
 
     // Ловим собыитие клика по кнопке добавить в корзину
@@ -41,7 +55,7 @@ $(document).ready(function () {
 
                 // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
                 var cartItemsContainer = $("#cart-items-container");
-                cartItemsContainer.html(data.cart_items_html);
+                updateCartUI(data);
 
             },
 
@@ -92,7 +106,7 @@ $(document).ready(function () {
 
                  // Меняем содержимое корзины на ответ от django (новый отрисованный фрагмент разметки корзины)
                  var cartItemsContainer = $("#cart-items-container");
-                 cartItemsContainer.html(data.cart_items_html);
+                 updateCartUI(data);
 
              },
 
@@ -170,7 +184,7 @@ $(document).ready(function () {
 
                  // Меняем содержимое корзины
                  var cartItemsContainer = $("#cart-items-container");
-                 cartItemsContainer.html(data.cart_items_html);
+                 updateCartUI(data);
 
              },
              error: function (data) {
@@ -265,10 +279,7 @@ $(document).ready(function () {
             contentType: 'application/json',
             success: function (data) {
                 if (data.success) {
-                    // Обновляем HTML-содержимое корзины
-                    $('#cart-items-container').html(data.cart_items_html);
-                    // Обновляем счетчик в шапке сайта
-                    $('#goods-in-cart-count').text(data.cart_total_quantity);
+                    updateCartUI(data);
                 }
             },
             error: function (error) {
