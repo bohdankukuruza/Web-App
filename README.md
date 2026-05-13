@@ -116,13 +116,6 @@ The application was built with a focus on:
 | ----------------------------------------- | ----------------------------------------------- |
 | ![Login Page](screenshots/login-page.png) | ![Register Page](screenshots/register-page.png) |
 
-### 👤 User Profile
-
-![Profile Page](screenshots/profile-page.png)
-
-### 💳 Checkout
-
-![Checkout Page](screenshots/checkout-page.png)
 
 ---
 
