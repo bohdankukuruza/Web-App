@@ -19,3 +19,15 @@ def about(request):
     }
     return render(request, 'main/about.html', context)
 
+def delivery(request):
+    context: dict = {
+        'title': 'Delivery',
+    }
+    return render(request, 'main/delivery.html', context)
+
+def contact(request):
+    context: dict = {
+        'title': 'Contact',
+    }
+    return render(request, 'main/contact.html', context)
+

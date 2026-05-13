@@ -1,0 +1,626 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<style>
+    .contact-page {
+        background: #f8f9fa;
+        padding-bottom: 80px;
+    }
+
+    .contact-hero {
+        position: relative;
+        min-height: 420px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        border-radius: 0 0 36px 36px;
+        background:
+            linear-gradient(90deg, rgba(24, 28, 33, 0.9), rgba(24, 28, 33, 0.58)),
+            url("{% static 'deps/images/bg-image.jpg' %}") center/cover no-repeat;
+        color: #fff;
+    }
+
+    .contact-hero-content {
+        max-width: 760px;
+        padding: 80px 0;
+    }
+
+    .contact-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 16px;
+        margin-bottom: 22px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(8px);
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .contact-hero h1 {
+        font-size: clamp(38px, 5vw, 64px);
+        font-weight: 800;
+        line-height: 1.08;
+        margin-bottom: 22px;
+    }
+
+    .contact-hero p {
+        max-width: 700px;
+        font-size: 18px;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 0;
+    }
+
+    .contact-section {
+        margin-top: 72px;
+    }
+
+    .section-label {
+        display: inline-block;
+        margin-bottom: 14px;
+        color: #b7791f;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .section-title {
+        font-size: clamp(30px, 4vw, 44px);
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 20px;
+    }
+
+    .section-text {
+        color: #5b6472;
+        font-size: 17px;
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+
+    .contact-card,
+    .support-card {
+        height: 100%;
+        padding: 30px;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        border-radius: 24px;
+        background: #fff;
+        box-shadow: 0 18px 45px rgba(31, 41, 55, 0.07);
+        transition: 0.25s ease;
+    }
+
+    .contact-card:hover,
+    .support-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 24px 55px rgba(31, 41, 55, 0.12);
+    }
+
+    .card-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 22px;
+        border-radius: 18px;
+        background: #f5ead7;
+        color: #9a6700;
+        font-size: 24px;
+    }
+
+    .contact-card h3,
+    .support-card h3 {
+        font-size: 22px;
+        font-weight: 750;
+        color: #1f2937;
+        margin-bottom: 14px;
+    }
+
+    .contact-card p,
+    .support-card p {
+        margin: 0;
+        color: #667085;
+        line-height: 1.75;
+        font-size: 16px;
+    }
+
+    .contact-link {
+        display: inline-block;
+        margin-top: 12px;
+        color: #252a32;
+        text-decoration: none;
+        font-weight: 700;
+        transition: 0.2s ease;
+    }
+
+    .contact-link:hover {
+        color: #9a6700;
+    }
+
+    .contact-highlight {
+        padding: 44px;
+        border-radius: 30px;
+        background: linear-gradient(135deg, #252a32, #3c3022);
+        color: #fff;
+        box-shadow: 0 26px 65px rgba(24, 28, 33, 0.2);
+    }
+
+    .contact-highlight h2 {
+        font-size: clamp(28px, 4vw, 42px);
+        font-weight: 800;
+        margin-bottom: 16px;
+    }
+
+    .contact-highlight p {
+        max-width: 880px;
+        margin-bottom: 0;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 17px;
+        line-height: 1.8;
+    }
+
+    .details-panel {
+        height: 100%;
+        padding: 36px;
+        border-radius: 28px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 18px 50px rgba(31, 41, 55, 0.08);
+    }
+
+    .details-panel h3 {
+        font-size: 28px;
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 24px;
+    }
+
+    .detail-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 18px;
+        padding: 18px 0;
+        border-bottom: 1px solid rgba(31, 41, 55, 0.08);
+    }
+
+    .detail-row:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .detail-small-icon {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+        background: #f5ead7;
+        color: #9a6700;
+        font-size: 18px;
+    }
+
+    .detail-content h4 {
+        font-size: 17px;
+        font-weight: 750;
+        color: #1f2937;
+        margin-bottom: 6px;
+    }
+
+    .detail-content p {
+        margin: 0;
+        color: #667085;
+        font-size: 16px;
+        line-height: 1.7;
+    }
+
+    .map-placeholder {
+        position: relative;
+        min-height: 100%;
+        border-radius: 28px;
+        overflow: hidden;
+        background:
+            linear-gradient(135deg, rgba(37, 42, 50, 0.9), rgba(60, 48, 34, 0.85)),
+            url("{% static 'deps/images/1.jpg' %}") center/cover no-repeat;
+        box-shadow: 0 24px 60px rgba(24, 28, 33, 0.16);
+        color: #fff;
+        padding: 42px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    .map-placeholder h3 {
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 14px;
+    }
+
+    .map-placeholder p {
+        margin: 0;
+        max-width: 520px;
+        font-size: 17px;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.86);
+    }
+
+    .contact-cta {
+        margin-top: 72px;
+        padding: 52px;
+        border-radius: 32px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 18px 50px rgba(31, 41, 55, 0.08);
+    }
+
+    .contact-cta h2 {
+        font-size: clamp(28px, 4vw, 42px);
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 16px;
+    }
+
+    .contact-cta p {
+        max-width: 720px;
+        margin: 0 auto 28px;
+        color: #667085;
+        font-size: 17px;
+        line-height: 1.8;
+    }
+
+    .contact-cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 26px;
+        border-radius: 14px;
+        background: #252a32;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        transition: 0.25s ease;
+    }
+
+    .contact-cta-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        background: #111827;
+    }
+
+    @media (max-width: 991px) {
+        .contact-hero {
+            min-height: 480px;
+            border-radius: 0 0 26px 26px;
+        }
+
+        .contact-hero-content {
+            padding: 64px 0;
+        }
+
+        .contact-highlight {
+            padding: 34px 24px;
+        }
+
+        .details-panel {
+            padding: 28px 22px;
+        }
+
+        .map-placeholder {
+            min-height: 380px;
+            padding: 30px 24px;
+        }
+
+        .contact-cta {
+            padding: 36px 24px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block modal_cart %}
+    {% include "includes/cart_button.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="contact-page">
+
+    <!-- Hero -->
+    <section class="contact-hero">
+        <div class="container">
+            <div class="contact-hero-content">
+                <div class="contact-badge">
+                    <i class="fas fa-address-book"></i>
+                    Contact Details
+                </div>
+
+                <h1>We are here to help with your shopping experience</h1>
+
+                <p>
+                    Have a question about a product, your order, or delivery?
+                    Contact Treasure Chest through the details below and our team will be happy to assist you.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+
+        <!-- Main Contact Cards -->
+        <section class="contact-section">
+            <div class="text-center mb-5">
+                <span class="section-label">Get in touch</span>
+                <h2 class="section-title">Choose the most convenient way to contact us</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="contact-card">
+                        <div class="card-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <h3>Call us</h3>
+                        <p>
+                            Speak with our team directly for general questions, order updates,
+                            or help choosing the right product.
+                        </p>
+                        <a href="tel:+353857839331" class="contact-link">
+                            +353 857839331
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="contact-card">
+                        <div class="card-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email support</h3>
+                        <p>
+                            Send us a message and we will review your request as soon as possible.
+                        </p>
+                        <a href="mailto:info@treasurechest.ie" class="contact-link">
+                            info@treasurechest.ie
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="contact-card">
+                        <div class="card-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Visit us</h3>
+                        <p>
+                            Our store details are available below for customers who want to know
+                            where Treasure Chest is based.
+                        </p>
+                        <span class="contact-link">
+                            42 O'Connell Street, Dublin
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Highlight -->
+        <section class="contact-section">
+            <div class="contact-highlight">
+                <h2>Clear communication makes shopping easier</h2>
+                <p>
+                    Whether customers need help with delivery, product information, or order questions,
+                    Treasure Chest presents contact details clearly so support is always easy to find.
+                </p>
+            </div>
+        </section>
+
+        <!-- Details and Location -->
+        <section class="contact-section">
+            <div class="row g-4 align-items-stretch">
+                <div class="col-lg-6">
+                    <div class="details-panel">
+                        <h3>Contact information</h3>
+
+                        <div class="detail-row">
+                            <div class="detail-small-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="detail-content">
+                                <h4>Phone number</h4>
+                                <p>+353 857839331</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-row">
+                            <div class="detail-small-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="detail-content">
+                                <h4>Email address</h4>
+                                <p>info@treasurechest.ie</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-row">
+                            <div class="detail-small-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="detail-content">
+                                <h4>Store address</h4>
+                                <p>42 O'Connell Street, Dublin, Ireland</p>
+                            </div>
+                        </div>
+
+                        <div class="detail-row">
+                            <div class="detail-small-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="detail-content">
+                                <h4>Customer support</h4>
+                                <p>Available for product, order, and delivery enquiries.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="map-placeholder">
+                        <h3>Treasure Chest, Dublin</h3>
+                        <p>
+                            A clean visual location block keeps the page polished.
+                            Later, this section can be replaced with an embedded Google Map if needed.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Support Types -->
+        <section class="contact-section">
+            <div class="text-center mb-5">
+                <span class="section-label">Support topics</span>
+                <h2 class="section-title">What we can help with</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="support-card">
+                        <div class="card-icon">
+                            <i class="fas fa-couch"></i>
+                        </div>
+                        <h3>Product questions</h3>
+                        <p>
+                            Need more information about furniture, décor, or product suitability?
+                            Contact us before placing an order.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="support-card">
+                        <div class="card-icon">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
+                        <h3>Order assistance</h3>
+                        <p>
+                            We can help clarify order details, cart questions, and checkout-related issues.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="support-card">
+                        <div class="card-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <h3>Delivery enquiries</h3>
+                        <p>
+                            Questions about delivery steps, order preparation, or receiving larger items
+                            can be addressed through our contact channels.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="contact-cta text-center">
+            <h2>Still exploring?</h2>
+            <p>
+                Browse the Treasure Chest catalog and find furniture and décor
+                that match your home and style.
+            </p>
+
+            <a href="{% url 'catalog:index' 'all' %}" class="contact-cta-btn">
+                <i class="fas fa-store"></i>
+                Browse products
+            </a>
+        </section>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-main">
+
+            <div class="footer-column">
+                <h4>Help</h4>
+                <ul>
+                    <li><a href="#">How to place an order</a></li>
+                    <li><a href="{% url 'main:delivery' %}">Delivery and payment</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Privacy and data protection</a></li>
+                    <li><a href="#">Terms and conditions</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Loyalty program</h4>
+                <ul>
+                    <li><a href="#">Treasure Chest rewards</a></li>
+                    <li><a href="#">Gift cards</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="{% url 'main:about' %}">About us</a></li>
+                    <li><a href="#">News</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Partnerships</a></li>
+                    <li><a href="{% url 'main:contact' %}">Contact details</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Catalog</h4>
+                <ul>
+                    <li><a href="#">Living room furniture</a></li>
+                    <li><a href="#">Bedroom furniture</a></li>
+                    <li><a href="#">Tables and chairs</a></li>
+                    <li><a href="#">Home décor</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <a href="#" class="footer-subscribe-btn">
+                    <span>Subscribe to updates</span>
+                    <i class="fas fa-paper-plane"></i>
+                </a>
+
+                <div class="footer-contacts">
+                    <p><i class="fas fa-phone-alt"></i> +353 857839331</p>
+                    <p><i class="fas fa-envelope"></i> info@treasurechest.ie</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-socials">
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+        </div>
+
+        <div class="footer-legal">
+            <p>2026 © Treasure Chest. All rights reserved.</p>
+            <p>
+                The information on this website is presented for demonstration purposes.
+                Final product details are confirmed during checkout.
+            </p>
+        </div>
+    </div>
+</footer>
+
+<a href="#" id="back-to-top" class="back-to-top-btn" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</a>
+{% endblock %}

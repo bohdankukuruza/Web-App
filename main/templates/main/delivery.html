@@ -1,0 +1,608 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<style>
+    .delivery-page {
+        background: #f8f9fa;
+        padding-bottom: 80px;
+    }
+
+    .delivery-hero {
+        position: relative;
+        min-height: 420px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        border-radius: 0 0 36px 36px;
+        background:
+            linear-gradient(90deg, rgba(24, 28, 33, 0.9), rgba(24, 28, 33, 0.58)),
+            url("{% static 'deps/images/bg-image.jpg' %}") center/cover no-repeat;
+        color: #fff;
+    }
+
+    .delivery-hero-content {
+        max-width: 760px;
+        padding: 80px 0;
+    }
+
+    .delivery-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 16px;
+        margin-bottom: 22px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(8px);
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .delivery-hero h1 {
+        font-size: clamp(38px, 5vw, 64px);
+        font-weight: 800;
+        line-height: 1.08;
+        margin-bottom: 22px;
+    }
+
+    .delivery-hero p {
+        max-width: 690px;
+        font-size: 18px;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 0;
+    }
+
+    .delivery-section {
+        margin-top: 72px;
+    }
+
+    .section-label {
+        display: inline-block;
+        margin-bottom: 14px;
+        color: #b7791f;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .section-title {
+        font-size: clamp(30px, 4vw, 44px);
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 20px;
+    }
+
+    .section-text {
+        color: #5b6472;
+        font-size: 17px;
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+
+    .delivery-card,
+    .step-card,
+    .info-card {
+        height: 100%;
+        padding: 30px;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        border-radius: 24px;
+        background: #fff;
+        box-shadow: 0 18px 45px rgba(31, 41, 55, 0.07);
+        transition: 0.25s ease;
+    }
+
+    .delivery-card:hover,
+    .step-card:hover,
+    .info-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 24px 55px rgba(31, 41, 55, 0.12);
+    }
+
+    .card-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 22px;
+        border-radius: 18px;
+        background: #f5ead7;
+        color: #9a6700;
+        font-size: 24px;
+    }
+
+    .delivery-card h3,
+    .step-card h3,
+    .info-card h3 {
+        font-size: 22px;
+        font-weight: 750;
+        color: #1f2937;
+        margin-bottom: 14px;
+    }
+
+    .delivery-card p,
+    .step-card p,
+    .info-card p {
+        margin: 0;
+        color: #667085;
+        line-height: 1.75;
+        font-size: 16px;
+    }
+
+    .steps-wrapper {
+        position: relative;
+    }
+
+    .step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        margin-bottom: 20px;
+        border-radius: 50%;
+        background: #252a32;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .delivery-highlight {
+        padding: 44px;
+        border-radius: 30px;
+        background: linear-gradient(135deg, #252a32, #3c3022);
+        color: #fff;
+        box-shadow: 0 26px 65px rgba(24, 28, 33, 0.2);
+    }
+
+    .delivery-highlight h2 {
+        font-size: clamp(28px, 4vw, 42px);
+        font-weight: 800;
+        margin-bottom: 16px;
+    }
+
+    .delivery-highlight p {
+        max-width: 860px;
+        margin-bottom: 0;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: 17px;
+        line-height: 1.8;
+    }
+
+    .faq-item {
+        padding: 26px 28px;
+        border-radius: 22px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 14px 40px rgba(31, 41, 55, 0.06);
+    }
+
+    .faq-item h3 {
+        font-size: 20px;
+        font-weight: 750;
+        color: #1f2937;
+        margin-bottom: 12px;
+    }
+
+    .faq-item p {
+        margin: 0;
+        color: #667085;
+        font-size: 16px;
+        line-height: 1.75;
+    }
+
+    .delivery-cta {
+        margin-top: 72px;
+        padding: 52px;
+        border-radius: 32px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 18px 50px rgba(31, 41, 55, 0.08);
+    }
+
+    .delivery-cta h2 {
+        font-size: clamp(28px, 4vw, 42px);
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 16px;
+    }
+
+    .delivery-cta p {
+        max-width: 720px;
+        margin: 0 auto 28px;
+        color: #667085;
+        font-size: 17px;
+        line-height: 1.8;
+    }
+
+    .delivery-cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 26px;
+        border-radius: 14px;
+        background: #252a32;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        transition: 0.25s ease;
+    }
+
+    .delivery-cta-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        background: #111827;
+    }
+
+    @media (max-width: 991px) {
+        .delivery-hero {
+            min-height: 480px;
+            border-radius: 0 0 26px 26px;
+        }
+
+        .delivery-hero-content {
+            padding: 64px 0;
+        }
+
+        .delivery-highlight {
+            padding: 34px 24px;
+        }
+
+        .delivery-cta {
+            padding: 36px 24px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block modal_cart %}
+    {% include "includes/cart_button.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="delivery-page">
+
+    <!-- Hero -->
+    <section class="delivery-hero">
+        <div class="container">
+            <div class="delivery-hero-content">
+                <div class="delivery-badge">
+                    <i class="fas fa-truck"></i>
+                    Delivery Information
+                </div>
+
+                <h1>Fast, clear, and convenient furniture delivery</h1>
+
+                <p>
+                    At Treasure Chest, we aim to make the final step of your order as smooth as the shopping experience.
+                    Learn how delivery works, what to expect after checkout, and how we handle larger furniture items.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+
+        <!-- Delivery Options -->
+        <section class="delivery-section">
+            <div class="text-center mb-5">
+                <span class="section-label">Delivery options</span>
+                <h2 class="section-title">How your order reaches you</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="delivery-card">
+                        <div class="card-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <h3>Small item delivery</h3>
+                        <p>
+                            Compact décor and smaller household items can be prepared and dispatched
+                            quickly through standard delivery.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="delivery-card">
+                        <div class="card-icon">
+                            <i class="fas fa-couch"></i>
+                        </div>
+                        <h3>Furniture delivery</h3>
+                        <p>
+                            Larger items such as sofas, tables, and beds are handled with extra care
+                            to help ensure safe transportation.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="delivery-card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <h3>Order coordination</h3>
+                        <p>
+                            Delivery details can be confirmed during order processing so customers
+                            understand the next steps clearly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process -->
+        <section class="delivery-section">
+            <div class="text-center mb-5">
+                <span class="section-label">How it works</span>
+                <h2 class="section-title">From checkout to delivery</h2>
+            </div>
+
+            <div class="row g-4 steps-wrapper">
+                <div class="col-lg-3 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3>Place your order</h3>
+                        <p>
+                            Add products to your cart, review the order, and complete the checkout form.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3>Order review</h3>
+                        <p>
+                            Your order details are processed and prepared for the next stage.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3>Delivery preparation</h3>
+                        <p>
+                            Items are organised for dispatch with attention to safe handling and packaging.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h3>Receive your items</h3>
+                        <p>
+                            Your order arrives and can be checked once it has been delivered.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Highlight -->
+        <section class="delivery-section">
+            <div class="delivery-highlight">
+                <h2>Delivery built around clarity and customer confidence</h2>
+                <p>
+                    The goal of our delivery process is simple: customers should always understand what happens
+                    after checkout. Treasure Chest presents delivery information in a clear way, helping users feel
+                    confident before placing an order.
+                </p>
+            </div>
+        </section>
+
+        <!-- Important Information -->
+        <section class="delivery-section">
+            <div class="text-center mb-5">
+                <span class="section-label">Important information</span>
+                <h2 class="section-title">Things to keep in mind</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="info-card">
+                        <div class="card-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>Correct delivery details</h3>
+                        <p>
+                            Please make sure your contact and address information is entered accurately
+                            during checkout to avoid unnecessary delivery issues.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="info-card">
+                        <div class="card-icon">
+                            <i class="fas fa-ruler-combined"></i>
+                        </div>
+                        <h3>Check item dimensions</h3>
+                        <p>
+                            For larger furniture, it is useful to review product dimensions in advance
+                            and ensure the item can fit through entrances and hallways.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="info-card">
+                        <div class="card-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <h3>Stay reachable</h3>
+                        <p>
+                            Keeping your phone number up to date helps with order-related communication
+                            and delivery coordination.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="info-card">
+                        <div class="card-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <h3>Inspect your order</h3>
+                        <p>
+                            Once your items arrive, review them carefully and make sure everything matches
+                            the order details.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="delivery-section">
+            <div class="text-center mb-5">
+                <span class="section-label">FAQ</span>
+                <h2 class="section-title">Delivery questions</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="faq-item">
+                        <h3>When will I receive my order?</h3>
+                        <p>
+                            Delivery timing depends on the item type and order processing stage.
+                            Exact details can be confirmed as the order is handled.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="faq-item">
+                        <h3>Can larger furniture be delivered?</h3>
+                        <p>
+                            Yes. Larger items are considered separately and prepared with additional attention
+                            to handling and transport.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="faq-item">
+                        <h3>What if my delivery information is incorrect?</h3>
+                        <p>
+                            Customers should provide accurate details during checkout and update them
+                            before order processing whenever necessary.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="faq-item">
+                        <h3>Can I review my order before confirmation?</h3>
+                        <p>
+                            Yes. The checkout process allows users to review cart contents and entered information
+                            before completing the order.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="delivery-cta text-center">
+            <h2>Ready to choose something for your home?</h2>
+            <p>
+                Browse the Treasure Chest catalog, add your favourite products to the cart,
+                and move through a clear and convenient checkout experience.
+            </p>
+
+            <a href="{% url 'catalog:index' 'all' %}" class="delivery-cta-btn">
+                <i class="fas fa-store"></i>
+                Browse products
+            </a>
+        </section>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-main">
+
+            <div class="footer-column">
+                <h4>Help</h4>
+                <ul>
+                    <li><a href="#">How to place an order</a></li>
+                    <li><a href="{% url 'main:delivery' %}">Delivery and payment</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Privacy and data protection</a></li>
+                    <li><a href="#">Terms and conditions</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Loyalty program</h4>
+                <ul>
+                    <li><a href="#">Treasure Chest rewards</a></li>
+                    <li><a href="#">Gift cards</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="{% url 'main:about' %}">About us</a></li>
+                    <li><a href="#">News</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Partnerships</a></li>
+                    <li><a href="{% url 'main:contact' %}">Contact details</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Catalog</h4>
+                <ul>
+                    <li><a href="#">Living room furniture</a></li>
+                    <li><a href="#">Bedroom furniture</a></li>
+                    <li><a href="#">Tables and chairs</a></li>
+                    <li><a href="#">Home décor</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <a href="#" class="footer-subscribe-btn">
+                    <span>Subscribe to updates</span>
+                    <i class="fas fa-paper-plane"></i>
+                </a>
+
+                <div class="footer-contacts">
+                    <p><i class="fas fa-phone-alt"></i> +353 857839331</p>
+                    <p><i class="fas fa-envelope"></i> info@treasurechest.ie</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-socials">
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+        </div>
+
+        <div class="footer-legal">
+            <p>2026 © Treasure Chest. All rights reserved.</p>
+            <p>
+                The information on this website is presented for demonstration purposes.
+                Final product details are confirmed during checkout.
+            </p>
+        </div>
+    </div>
+</footer>
+
+<a href="#" id="back-to-top" class="back-to-top-btn" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</a>
+{% endblock %}
