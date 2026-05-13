@@ -4,334 +4,927 @@
 
 {% block css %}
 <style>
-    /* Основной макет страницы каталога */
-    .catalog-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 30px; /* Отступ между товарами и фильтрами */
+    .catalog-page {
+        background: #f8f9fa;
+        padding-bottom: 88px;
     }
 
-    /* Основной контент с товарами (левая часть) */
+    /* HERO */
+
+    .catalog-hero {
+        position: relative;
+        min-height: 390px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        border-radius: 0 0 38px 38px;
+        color: #fff;
+        background:
+            linear-gradient(90deg, rgba(24, 28, 33, 0.93), rgba(24, 28, 33, 0.62)),
+            url("{% static 'deps/images/bg-image.jpg' %}") center/cover no-repeat;
+    }
+
+    .catalog-hero-content {
+        max-width: 820px;
+        padding: 78px 0;
+    }
+
+    .catalog-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 10px 16px;
+        margin-bottom: 22px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(9px);
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .catalog-hero h1 {
+        margin-bottom: 18px;
+        font-size: clamp(40px, 5vw, 66px);
+        line-height: 1.07;
+        font-weight: 950;
+        letter-spacing: -0.035em;
+    }
+
+    .catalog-hero p {
+        max-width: 720px;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 18px;
+        line-height: 1.8;
+    }
+
+    /* PAGE LAYOUT */
+
+    .catalog-content {
+        margin-top: 58px;
+    }
+
+    .catalog-top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 24px;
+        margin-bottom: 34px;
+    }
+
+    .catalog-intro-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 13px;
+        color: #9a6700;
+        font-size: 14px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .catalog-top-row h2 {
+        margin-bottom: 10px;
+        color: #1f2937;
+        font-size: clamp(30px, 4vw, 46px);
+        line-height: 1.15;
+        font-weight: 950;
+    }
+
+    .catalog-top-row p {
+        max-width: 720px;
+        margin: 0;
+        color: #667085;
+        font-size: 17px;
+        line-height: 1.75;
+    }
+
+    .catalog-count-pill {
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 18px;
+        border-radius: 18px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 16px 38px rgba(31, 41, 55, 0.07);
+        color: #344054;
+        font-size: 15px;
+        font-weight: 850;
+    }
+
+    .catalog-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 32px;
+        align-items: start;
+    }
+
+    /* SEARCH INFO */
+
+    .search-result-box {
+        margin-bottom: 28px;
+        padding: 24px 26px;
+        border-radius: 24px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 18px 44px rgba(31, 41, 55, 0.07);
+    }
+
+    .search-result-box span {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+        color: #9a6700;
+        font-size: 13px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+    }
+
+    .search-result-box h3 {
+        margin: 0;
+        color: #1f2937;
+        font-size: 25px;
+        line-height: 1.35;
+        font-weight: 900;
+    }
+
+    /* PRODUCTS GRID */
+
     .products-grid {
-        flex: 1;
-        min-width: 70%;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 24px;
     }
 
-    /* Сайдбар с фильтрами (правая часть) */
-    .filters-sidebar {
+    .product-card-modern {
+        position: relative;
+        min-height: 100%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        border-radius: 30px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 20px 54px rgba(31, 41, 55, 0.08);
+        transition: 0.28s ease;
+    }
+
+    .product-card-modern:hover {
+        transform: translateY(-7px);
+        box-shadow: 0 30px 72px rgba(31, 41, 55, 0.14);
+    }
+
+    .product-image-link {
+        position: relative;
+        display: block;
+        height: 285px;
+        overflow: hidden;
+        background: #eef0f3;
+    }
+
+    .product-image-link img {
         width: 100%;
-        max-width: 280px; /* Фиксированная ширина для сайдбара на больших экранах */
-        background-color: #f9f9f9;
-        padding: 25px;
-        border-radius: 12px;
-        border: 1px solid #eee;
-        height: fit-content; /* Высота по содержимому */
-    }
-
-    .filters-sidebar h4 {
-        font-weight: 600;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #eee;
-    }
-
-    .filters-sidebar .form-check {
-        margin-bottom: 10px;
-    }
-
-    .filters-sidebar .btn-primary {
-        width: 100%;
-        background-color: #556B2F; /* Оливковый цвет, как мы обсуждали */
-        border: none;
-        padding: 10px;
-        font-weight: 600;
-    }
-    .filters-sidebar .btn-primary:hover {
-        background-color: #445625;
-    }
-
-    /* Новый дизайн карточки товара */
-    .product-card {
-        background-color: #fff;
-        border: 1px solid #eee;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
         height: 100%;
-        display: flex;
-        flex-direction: column;
-        position: relative; /* Для позиционирования скидки */
-        overflow: hidden; /* Скрываем все, что выходит за рамки */
-    }
-
-    .product-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    }
-
-    .product-card .card-img-top {
-        border-radius: 12px 12px 0 0;
-        max-height: 250px;
         object-fit: cover;
+        transition: 0.42s ease;
     }
 
-    .product-card .card-body {
-        flex-grow: 1;
+    .product-card-modern:hover .product-image-link img {
+        transform: scale(1.055);
+    }
+
+    .discount-badge-modern {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        z-index: 2;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 13px;
+        border-radius: 999px;
+        background: #252a32;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 900;
+        box-shadow: 0 14px 28px rgba(24, 28, 33, 0.24);
+    }
+
+    .product-content {
+        flex: 1;
         display: flex;
         flex-direction: column;
-        padding: 20px;
+        padding: 25px;
     }
 
-    .product-card .card-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 10px;
+    .product-category-label {
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 13px;
+        color: #9a6700;
+        font-size: 13px;
+        font-weight: 850;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
     }
 
-    .product-card a {
+    .product-title-link {
         text-decoration: none;
     }
 
-    .product-card .card-text {
-        color: #666;
-        flex-grow: 1;
-        margin-bottom: 15px;
+    .product-title {
+        margin-bottom: 13px;
+        color: #1f2937;
+        font-size: 22px;
+        line-height: 1.3;
+        font-weight: 950;
+        transition: 0.2s ease;
     }
 
-    .product-card .product-price {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: #333;
+    .product-title-link:hover .product-title {
+        color: #8cab4f;
     }
 
-    .product-card .old-price {
-        font-size: 1rem;
-        color: #999;
-        text-decoration: line-through;
-        margin-right: 10px;
+    .product-description {
+        flex: 1;
+        margin-bottom: 22px;
+        color: #667085;
+        font-size: 15px;
+        line-height: 1.75;
     }
 
-    /* Новый стильный значок скидки */
-    .discount-badge {
-        position: absolute;
-        top: 15px;
-        right: -1px;
-        background-color: #c7a159; /* Золотой цвет */
-        color: white;
-        padding: 6px 15px 6px 20px;
+    .product-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding-top: 18px;
+        border-top: 1px solid rgba(31, 41, 55, 0.08);
+    }
+
+    .product-price-group {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .old-price {
+        color: #98a2b3;
         font-size: 14px;
-        font-weight: bold;
-        border-radius: 20px 0 0 20px;
-        box-shadow: -2px 2px 5px rgba(0,0,0,0.1);
+        font-weight: 700;
+        text-decoration: line-through;
     }
 
-    /* Адаптивность */
-    @media (max-width: 992px) {
-        .filters-sidebar {
-            max-width: 100%;
-            order: -1; /* На мобильных фильтры будут сверху */
+    .current-price {
+        color: #111827;
+        font-size: 25px;
+        line-height: 1.15;
+        font-weight: 950;
+    }
+
+    .add-to-cart-modern {
+        width: 54px;
+        height: 54px;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 18px;
+        background: #252a32;
+        color: #fff;
+        text-decoration: none;
+        border: none;
+        transition: 0.25s ease;
+    }
+
+    .add-to-cart-modern i {
+        font-size: 20px;
+    }
+
+    .add-to-cart-modern:hover {
+        color: #fff;
+        background: #111827;
+        transform: translateY(-3px);
+        box-shadow: 0 18px 32px rgba(24, 28, 33, 0.18);
+    }
+
+    /* EMPTY RESULT */
+
+    .catalog-empty {
+        min-height: 480px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 24px;
+        border-radius: 34px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 22px 60px rgba(31, 41, 55, 0.08);
+        text-align: center;
+    }
+
+    .catalog-empty-content {
+        max-width: 560px;
+    }
+
+    .catalog-empty-icon {
+        width: 96px;
+        height: 96px;
+        margin: 0 auto 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 30px;
+        background: #f5ead7;
+        color: #9a6700;
+        font-size: 40px;
+    }
+
+    .catalog-empty h3 {
+        margin-bottom: 14px;
+        color: #1f2937;
+        font-size: 34px;
+        font-weight: 950;
+    }
+
+    .catalog-empty p {
+        margin-bottom: 26px;
+        color: #667085;
+        font-size: 17px;
+        line-height: 1.8;
+    }
+
+    .catalog-empty-btn {
+        min-height: 56px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 25px;
+        border-radius: 18px;
+        background: #252a32;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 900;
+        transition: 0.25s ease;
+    }
+
+    .catalog-empty-btn:hover {
+        color: #fff;
+        background: #111827;
+        transform: translateY(-2px);
+    }
+
+    /* FILTERS */
+
+    .filters-panel {
+        position: sticky;
+        top: 28px;
+        padding: 28px;
+        border-radius: 30px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 22px 56px rgba(31, 41, 55, 0.09);
+    }
+
+    .filters-panel h3 {
+        margin-bottom: 8px;
+        color: #1f2937;
+        font-size: 28px;
+        font-weight: 950;
+    }
+
+    .filters-panel > p {
+        margin-bottom: 26px;
+        color: #667085;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    .filter-group {
+        margin-bottom: 25px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid rgba(31, 41, 55, 0.08);
+    }
+
+    .filter-group:last-of-type {
+        margin-bottom: 24px;
+    }
+
+    .filter-group-title {
+        margin-bottom: 16px;
+        color: #344054;
+        font-size: 15px;
+        font-weight: 900;
+    }
+
+    .filter-option {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+        margin-bottom: 14px;
+        cursor: pointer;
+    }
+
+    .filter-option:last-child {
+        margin-bottom: 0;
+    }
+
+    .filter-option input {
+        margin-top: 3px;
+        accent-color: #252a32;
+    }
+
+    .filter-option span {
+        color: #475467;
+        font-size: 15px;
+        line-height: 1.55;
+        font-weight: 650;
+    }
+
+    .filter-submit-btn {
+        width: 100%;
+        min-height: 56px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: none;
+        border-radius: 18px;
+        background: #252a32;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 900;
+        transition: 0.25s ease;
+    }
+
+    .filter-submit-btn:hover {
+        background: #111827;
+        transform: translateY(-2px);
+    }
+
+    /* PAGINATION */
+
+    .catalog-pagination {
+        margin-top: 42px;
+    }
+
+    .catalog-pagination-list {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+
+    .catalog-page-item a,
+    .catalog-page-item span {
+        min-width: 48px;
+        height: 48px;
+        padding: 0 16px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: #fff;
+        color: #344054;
+        border: 1px solid rgba(31, 41, 55, 0.1);
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 900;
+        box-shadow: 0 12px 28px rgba(31, 41, 55, 0.05);
+        transition: 0.22s ease;
+    }
+
+    .catalog-page-item a:hover {
+        color: #fff;
+        background: #252a32;
+        border-color: #252a32;
+        transform: translateY(-2px);
+    }
+
+    .catalog-page-item.active span {
+        color: #fff;
+        background: #252a32;
+        border-color: #252a32;
+    }
+
+    .catalog-page-item.disabled span {
+        cursor: not-allowed;
+        color: #98a2b3;
+        background: #f5f5f5;
+        box-shadow: none;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1199px) {
+        .catalog-layout {
+            grid-template-columns: 1fr;
         }
-        .catalog-container {
+
+        .filters-panel {
+            position: static;
+            order: -1;
+        }
+
+        .products-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 767px) {
+        .catalog-hero {
+            min-height: auto;
+            border-radius: 0 0 28px 28px;
+        }
+
+        .catalog-hero-content {
+            padding: 58px 0 64px;
+        }
+
+        .catalog-content {
+            margin-top: 42px;
+        }
+
+        .catalog-top-row {
             flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .products-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .product-image-link {
+            height: 260px;
+        }
+
+        .product-content,
+        .filters-panel {
+            padding: 23px;
+        }
+
+        .product-bottom {
+            align-items: flex-end;
         }
     }
-
 </style>
 {% endblock %}
 
-
 {% block modal_cart %}
-	{% include "includes/cart_button.html" %}
+    {% include "includes/cart_button.html" %}
 {% endblock %}
 
 {% block content %}
-        <div class="container my-5">
-        <div class="catalog-container">
+<div class="catalog-page">
 
-            <div class="products-grid">
-                {% if request.GET.q %}
-                    <h3 class="mb-4">Search results for the query "{{ request.GET.q }}"</h3>
-                    {% if not goods %}
-                        <h4 class="text-center">No results were found for your search.</h4>
-                    {% endif %}
-                {% endif %}
-
-                <div class="row">
-                    {% for product in goods %}
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="product-card">
-                            {% if product.discount %}
-                            <div class="discount-badge">Discount {{ product.discount }}%</div>
-                            {% endif %}
-
-                            <a href="{% url "catalog:product" product.slug %}">
-                                {% if product.image %}
-                                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                                {% else %}
-                                    <img src="{% static 'deps/images/Not found image.png' %}" class="card-img-top" alt="Изображение отсутствует">
-                                {% endif %}
-                            </a>
-
-                            <div class="card-body">
-                                <a href="{% url "catalog:product" product.slug %}">
-                                    <h5 class="card-title">{{ product.name }}</h5>
-                                </a>
-                                <p class="card-text">{{ product.description|truncatechars:70 }}</p>
-
-                                <div class="mt-auto d-flex justify-content-between align-items-center">
-                                    <div class="product-price">
-                                        {% if product.discount %}
-                                            <span class="old-price">{{ product.price|floatformat:2 }} $</span>
-                                            <strong>{{ product.sell_price|floatformat:2 }} $</strong>
-                                        {% else %}
-                                            <strong>{{ product.price|floatformat:2 }} $</strong>
-                                        {% endif %}
-                                    </div>
-                                    <a href="{% url 'cart:cart_add' %}" class="btn add-to-cart" data-product-id="{{ product.id }}">
-                                        <img src="{% static "deps/icons/cart-plus.svg" %}" alt="Добавить в корзину" width="28" height="28">
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
+    <!-- Hero -->
+    <section class="catalog-hero">
+        <div class="container">
+            <div class="catalog-hero-content">
+                <div class="catalog-badge">
+                    <i class="fas fa-th-large"></i>
+                    Treasure Chest Catalogue
                 </div>
 
-                {% if goods %}
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center my-4">
-                        <li class="page-item {% if not goods.has_previous %}disabled{% endif %}">
-                            <a class="page-link" href="{% if goods.has_previous %}?{% change_params page=goods.previous_page_number %}{% else %}#{% endif %}">Назад</a>
-                        </li>
-                        {% for page in goods.paginator.page_range %}
-                            {% if page >= goods.number|add:-2 and page <= goods.number|add:2 %}
-                                <li class="page-item {% if goods.number == page %} active {% endif %}">
-                                    <a class="page-link" href="?{% change_params page=page %}">{{ page }}</a>
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-                        <li class="page-item {% if not goods.has_next %}disabled{% endif %}">
-                            <a class="page-link" href="{% if goods.has_next %}?{% change_params page=goods.next_page_number %}{% else %}#{% endif %}">Вперед</a>
-                        </li>
-                    </ul>
-                </nav>
+                <h1>Explore furniture and décor for every room</h1>
+
+                <p>
+                    Browse our collections, compare products, discover special offers,
+                    and add the right pieces to your home.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container catalog-content">
+
+        <div class="catalog-top-row">
+            <div>
+                <div class="catalog-intro-label">
+                    <i class="fas fa-store"></i>
+                    Products
+                </div>
+
+                {% if request.GET.q %}
+                    <h2>Search results</h2>
+                    <p>
+                        Showing results for your query:
+                        <strong>"{{ request.GET.q }}"</strong>
+                    </p>
+                {% else %}
+                    <h2>Shop the collection</h2>
+                    <p>
+                        Discover stylish products and use the filters to find exactly what suits your space.
+                    </p>
                 {% endif %}
             </div>
 
-            <aside class="filters-sidebar">
-                <h4>Filters</h4>
-                <form id="filtersForm" action="{% if request.GET.q %}{% url "catalog:search" %}{% else %}{% url "catalog:index" slug_url %}{% endif %}" method="get">
-                    {% csrf_token %}
+            <div class="catalog-count-pill">
+                <i class="fas fa-box-open"></i>
+                <span>{{ goods.paginator.count }} products</span>
+            </div>
+        </div>
+
+        <div class="catalog-layout">
+
+            <!-- Products -->
+            <div>
+                {% if request.GET.q %}
+                    <div class="search-result-box">
+                        <span>
+                            <i class="fas fa-search"></i>
+                            Search query
+                        </span>
+                        <h3>{{ request.GET.q }}</h3>
+                    </div>
+                {% endif %}
+
+                {% if goods %}
+                    <div class="products-grid">
+                        {% for product in goods %}
+                            <article class="product-card-modern">
+
+                                {% if product.discount %}
+                                    <div class="discount-badge-modern">
+                                        <i class="fas fa-percent"></i>
+                                        {{ product.discount }}% off
+                                    </div>
+                                {% endif %}
+
+                                <a href="{% url 'catalog:product' product.slug %}" class="product-image-link">
+                                    {% if product.image %}
+                                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                    {% else %}
+                                        <img src="{% static 'deps/images/Not found image.png' %}" alt="Product image unavailable">
+                                    {% endif %}
+                                </a>
+
+                                <div class="product-content">
+                                    <div class="product-category-label">
+                                        <i class="fas fa-layer-group"></i>
+                                        Furniture
+                                    </div>
+
+                                    <a href="{% url 'catalog:product' product.slug %}" class="product-title-link">
+                                        <h3 class="product-title">{{ product.name }}</h3>
+                                    </a>
+
+                                    <p class="product-description">
+                                        {{ product.description|truncatechars:95 }}
+                                    </p>
+
+                                    <div class="product-bottom">
+                                        <div class="product-price-group">
+                                            {% if product.discount %}
+                                                <span class="old-price">{{ product.price|floatformat:2 }} $</span>
+                                                <strong class="current-price">{{ product.sell_price|floatformat:2 }} $</strong>
+                                            {% else %}
+                                                <strong class="current-price">{{ product.price|floatformat:2 }} $</strong>
+                                            {% endif %}
+                                        </div>
+
+                                        <a
+                                            href="{% url 'cart:cart_add' %}"
+                                            class="add-to-cart add-to-cart-modern"
+                                            data-product-id="{{ product.id }}"
+                                            aria-label="Add {{ product.name }} to basket">
+                                            <i class="fas fa-cart-plus"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                            </article>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav class="catalog-pagination" aria-label="Catalog pages">
+                        <ul class="catalog-pagination-list">
+
+                            <li class="catalog-page-item {% if not goods.has_previous %}disabled{% endif %}">
+                                {% if goods.has_previous %}
+                                    <a href="?{% change_params page=goods.previous_page_number %}">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                {% else %}
+                                    <span>
+                                        <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                {% endif %}
+                            </li>
+
+                            {% for page in goods.paginator.page_range %}
+                                {% if page >= goods.number|add:-2 and page <= goods.number|add:2 %}
+                                    <li class="catalog-page-item {% if goods.number == page %}active{% endif %}">
+                                        {% if goods.number == page %}
+                                            <span>{{ page }}</span>
+                                        {% else %}
+                                            <a href="?{% change_params page=page %}">{{ page }}</a>
+                                        {% endif %}
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+
+                            <li class="catalog-page-item {% if not goods.has_next %}disabled{% endif %}">
+                                {% if goods.has_next %}
+                                    <a href="?{% change_params page=goods.next_page_number %}">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                {% else %}
+                                    <span>
+                                        <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                {% endif %}
+                            </li>
+
+                        </ul>
+                    </nav>
+                {% else %}
+                    <div class="catalog-empty">
+                        <div class="catalog-empty-content">
+                            <div class="catalog-empty-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+
+                            <h3>No products found</h3>
+
+                            <p>
+                                We could not find products matching your search.
+                                Try another query or return to the full catalogue.
+                            </p>
+
+                            <a href="{% url 'catalog:index' 'all' %}" class="catalog-empty-btn">
+                                <i class="fas fa-store"></i>
+                                Browse all products
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Filters -->
+            <aside class="filters-panel">
+                <h3>Filters</h3>
+                <p>
+                    Refine the catalogue and organise products in the way that works best for you.
+                </p>
+
+                <form
+                    id="filtersForm"
+                    action="{% if request.GET.q %}{% url 'catalog:search' %}{% else %}{% url 'catalog:index' slug_url %}{% endif %}"
+                    method="get">
+
                     {% if request.GET.q %}
                         <input type="hidden" name="q" value="{{ request.GET.q }}">
                     {% endif %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="on_sale" id="onSaleCheck" value="on" {% if request.GET.on_sale == "on" %}checked{% endif %}>
-                        <label class="form-check-label" for="onSaleCheck">Special offers</label>
+
+                    <div class="filter-group">
+                        <div class="filter-group-title">Offers</div>
+
+                        <label class="filter-option" for="onSaleCheck">
+                            <input
+                                type="checkbox"
+                                name="on_sale"
+                                id="onSaleCheck"
+                                value="on"
+                                {% if request.GET.on_sale == "on" %}checked{% endif %}>
+                            <span>Show only discounted products</span>
+                        </label>
                     </div>
 
-                    <hr>
+                    <div class="filter-group">
+                        <div class="filter-group-title">Sort by</div>
 
-                    <p class="mt-3 fw-bold">Sort:</p>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="order_by" id="orderDefault" value="default" {% if not request.GET.order_by or request.GET.order_by == 'default' %}checked{% endif %}>
-                        <label class="form-check-label" for="orderDefault">By default</label>
+                        <label class="filter-option" for="orderDefault">
+                            <input
+                                type="radio"
+                                name="order_by"
+                                id="orderDefault"
+                                value="default"
+                                {% if not request.GET.order_by or request.GET.order_by == 'default' %}checked{% endif %}>
+                            <span>Default order</span>
+                        </label>
+
+                        <label class="filter-option" for="orderAsc">
+                            <input
+                                type="radio"
+                                name="order_by"
+                                id="orderAsc"
+                                value="price"
+                                {% if request.GET.order_by == 'price' %}checked{% endif %}>
+                            <span>Price: low to high</span>
+                        </label>
+
+                        <label class="filter-option" for="orderDesc">
+                            <input
+                                type="radio"
+                                name="order_by"
+                                id="orderDesc"
+                                value="-price"
+                                {% if request.GET.order_by == '-price' %}checked{% endif %}>
+                            <span>Price: high to low</span>
+                        </label>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="order_by" id="orderAsc" value="price" {% if request.GET.order_by == 'price' %}checked{% endif %}>
-                        <label class="form-check-label" for="orderAsc">From cheapest to most expensive</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="order_by" id="orderDesc" value="-price" {% if request.GET.order_by == '-price' %}checked{% endif %}>
-                        <label class="form-check-label" for="orderDesc">From the most expensive to the cheapest</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-4">Apply</button>
+
+                    <button type="submit" class="filter-submit-btn">
+                        <i class="fas fa-sliders-h"></i>
+                        Apply filters
+                    </button>
                 </form>
             </aside>
 
         </div>
     </div>
+</div>
 {% endblock %}
 
 {% block footer %}
-  <footer class="site-footer">
+<footer class="site-footer">
     <div class="container">
         <div class="footer-main">
+
             <div class="footer-column">
                 <h4>Help</h4>
                 <ul>
-                    <li><a href="#">Place an order</a></li>
-                    <li><a href="#">Delivery and payment</a></li>
+                    <li><a href="#">How to place an order</a></li>
+                    <li><a href="{% url 'main:delivery' %}">Delivery and payment</a></li>
                     <li><a href="#">Returns</a></li>
                     <li><a href="#">Privacy and data protection</a></li>
-                    <li><a href="#">Contract of Offer</a></li>
+                    <li><a href="#">Terms and conditions</a></li>
                 </ul>
             </div>
 
             <div class="footer-column">
-                <h4>Loyalty scheme</h4>
+                <h4>Loyalty program</h4>
                 <ul>
-
+                    <li><a href="#">Treasure Chest rewards</a></li>
                     <li><a href="#">Gift cards</a></li>
                 </ul>
             </div>
 
-                <div class="footer-column">
-                    <h4>Компания</h4>
-                    <ul>
-                        <li><a href="#">About the company</a></li>
-                        <li><a href="#">News</a></li>
-                        <li><a href="#">Job vacancies</a></li>
-                        <li><a href="#">Cooperation</a></li>
-                        <li><a href="#">Contact details</a></li>
-                        <li><a href="#">Events</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-            <h4>Catalog</h4>
-            <ul>
-                <li><a href="#">Bed Linen</a></li>
-                <li><a href="#">Bathroom Essentials</a></li>
-                <li><a href="#">Loungewear</a></li>
-                <li><a href="#">Home Fragrances</a></li>
-                <li><a href="#">Tableware & Cutlery</a></li>
-                <li><a href="#">Final Sale</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-column">
-            <a href="#" class="footer-subscribe-btn">
-                <span>Subscribe to Newsletter</span>
-                <i class="fas fa-paper-plane"></i>
-            </a>
-            <div class="footer-contacts">
-                <p><i class="fas fa-phone-alt"></i> +353 1 234 5678</p>
-                <p><i class="fas fa-envelope"></i> info@treasurechest.com</p>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="{% url 'main:about' %}">About us</a></li>
+                    <li><a href="#">News</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Partnerships</a></li>
+                    <li><a href="{% url 'main:contact' %}">Contact details</a></li>
+                </ul>
             </div>
+
+            <div class="footer-column">
+                <h4>Catalog</h4>
+                <ul>
+                    <li><a href="#">Living room furniture</a></li>
+                    <li><a href="#">Bedroom furniture</a></li>
+                    <li><a href="#">Tables and chairs</a></li>
+                    <li><a href="#">Home décor</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <a href="#" class="footer-subscribe-btn">
+                    <span>Subscribe to updates</span>
+                    <i class="fas fa-paper-plane"></i>
+                </a>
+
+                <div class="footer-contacts">
+                    <p><i class="fas fa-phone-alt"></i> +353 857839331</p>
+                    <p><i class="fas fa-envelope"></i> info@treasurechest.ie</p>
+                </div>
+            </div>
+
         </div>
-    </div>
 
-    <div class="footer-socials">
-        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
-        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-    </div>
+        <div class="footer-socials">
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+        </div>
 
-    <div class="footer-legal">
-        <p>2025 © «All rights reserved. Treasure Chest»</p>
-        <p>Information on this site does not constitute a public offer; please confirm final prices and product specifications with the online store manager when placing an order.</p>
-    </div>
+        <div class="footer-legal">
+            <p>2026 © Treasure Chest. All rights reserved.</p>
+            <p>
+                The information on this website is presented for demonstration purposes.
+                Final product details are confirmed during checkout.
+            </p>
+        </div>
     </div>
 </footer>
 
-<a href="#" id="back-to-top" class="back-to-top-btn" aria-label="Вернуться наверх">
+<a href="#" id="back-to-top" class="back-to-top-btn" aria-label="Back to top">
     <i class="fas fa-arrow-up"></i>
 </a>
 {% endblock %}
-
-
-
-

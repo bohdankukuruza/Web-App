@@ -1,50 +1,614 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block css %}
+<style>
+    .product-page {
+        background: #f8f9fa;
+        padding: 58px 0 92px;
+    }
+
+    .product-breadcrumb {
+        margin-bottom: 28px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #667085;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .product-breadcrumb a {
+        color: #344054;
+        text-decoration: none;
+        transition: 0.2s ease;
+    }
+
+    .product-breadcrumb a:hover {
+        color: #8cab4f;
+    }
+
+    .product-breadcrumb i {
+        font-size: 12px;
+        color: #98a2b3;
+    }
+
+    .product-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(430px, 0.95fr);
+        gap: 38px;
+        align-items: stretch;
+    }
+
+    /* IMAGE */
+
+    .product-gallery-card {
+        padding: 26px;
+        border-radius: 38px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 28px 70px rgba(31, 41, 55, 0.11);
+    }
+
+    .product-main-image {
+        position: relative;
+        height: 620px;
+        overflow: hidden;
+        border-radius: 30px;
+        background: #eef0f3;
+        cursor: zoom-in;
+    }
+
+    .product-main-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.42s ease;
+    }
+
+    .product-main-image:hover img {
+        transform: scale(1.045);
+    }
+
+    .zoom-hint {
+        position: absolute;
+        left: 22px;
+        bottom: 22px;
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 11px 15px;
+        border-radius: 999px;
+        color: #fff;
+        background: rgba(24, 28, 33, 0.82);
+        backdrop-filter: blur(8px);
+        font-size: 14px;
+        font-weight: 850;
+    }
+
+    /* PRODUCT INFO */
+
+    .product-info-card {
+        padding: 42px;
+        border-radius: 38px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 28px 70px rgba(31, 41, 55, 0.11);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-top-labels {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 22px;
+    }
+
+    .product-id-pill,
+    .product-stock-pill,
+    .product-sale-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 39px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 900;
+    }
+
+    .product-id-pill {
+        color: #344054;
+        background: #f2f4f7;
+    }
+
+    .product-stock-pill {
+        color: #067647;
+        background: #ecfdf3;
+    }
+
+    .product-sale-pill {
+        color: #8a5c00;
+        background: #f5ead7;
+    }
+
+    .product-title {
+        margin-bottom: 18px;
+        color: #1f2937;
+        font-size: clamp(36px, 4vw, 56px);
+        line-height: 1.08;
+        font-weight: 950;
+        letter-spacing: -0.035em;
+    }
+
+    .product-description-short {
+        margin-bottom: 30px;
+        color: #667085;
+        font-size: 17px;
+        line-height: 1.85;
+    }
+
+    .price-panel {
+        margin-bottom: 30px;
+        padding: 25px;
+        border-radius: 28px;
+        background: linear-gradient(145deg, #252a32, #343b46);
+        color: #fff;
+        box-shadow: 0 22px 50px rgba(24, 28, 33, 0.18);
+    }
+
+    .price-label {
+        display: block;
+        margin-bottom: 8px;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 14px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+    }
+
+    .price-row {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+        flex-wrap: wrap;
+    }
+
+    .current-product-price {
+        color: #fff;
+        font-size: clamp(36px, 4vw, 48px);
+        line-height: 1;
+        font-weight: 950;
+    }
+
+    .old-product-price {
+        color: rgba(255, 255, 255, 0.62);
+        font-size: 21px;
+        font-weight: 800;
+        text-decoration: line-through;
+    }
+
+    .product-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 34px;
+    }
+
+    .product-add-btn {
+        min-height: 60px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 11px;
+        padding: 16px 28px;
+        border-radius: 19px;
+        background: #252a32;
+        color: #fff;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 950;
+        transition: 0.25s ease;
+    }
+
+    .product-add-btn:hover {
+        color: #fff;
+        background: #111827;
+        transform: translateY(-3px);
+        box-shadow: 0 20px 38px rgba(24, 28, 33, 0.18);
+    }
+
+    .product-back-btn {
+        min-height: 60px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 11px;
+        padding: 16px 25px;
+        border-radius: 19px;
+        background: #fff;
+        color: #252a32;
+        border: 1px solid rgba(31, 41, 55, 0.14);
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 900;
+        transition: 0.25s ease;
+    }
+
+    .product-back-btn:hover {
+        color: #252a32;
+        border-color: #8cab4f;
+        background: #fafcf6;
+        transform: translateY(-3px);
+    }
+
+    .product-features {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-top: auto;
+    }
+
+    .product-feature {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 18px;
+        border-radius: 22px;
+        background: #fafafa;
+        border: 1px solid rgba(31, 41, 55, 0.07);
+    }
+
+    .product-feature-icon {
+        width: 46px;
+        height: 46px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: #f5ead7;
+        color: #9a6700;
+        font-size: 19px;
+    }
+
+    .product-feature h3 {
+        margin: 0 0 5px;
+        color: #1f2937;
+        font-size: 17px;
+        font-weight: 900;
+    }
+
+    .product-feature p {
+        margin: 0;
+        color: #667085;
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    /* DESCRIPTION SECTION */
+
+    .product-details-section {
+        margin-top: 40px;
+        padding: 42px;
+        border-radius: 38px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 24px 62px rgba(31, 41, 55, 0.08);
+    }
+
+    .product-details-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+        color: #9a6700;
+        font-size: 14px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .product-details-section h2 {
+        margin-bottom: 18px;
+        color: #1f2937;
+        font-size: clamp(30px, 4vw, 44px);
+        font-weight: 950;
+    }
+
+    .product-details-section p {
+        max-width: 1000px;
+        margin: 0;
+        color: #667085;
+        font-size: 17px;
+        line-height: 1.9;
+    }
+
+    /* MODAL */
+
+    .product-modal-image {
+        width: 100%;
+        max-height: 78vh;
+        object-fit: contain;
+        border-radius: 18px;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1199px) {
+        .product-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .product-main-image {
+            height: 540px;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .product-page {
+            padding: 40px 0 72px;
+        }
+
+        .product-gallery-card,
+        .product-info-card,
+        .product-details-section {
+            padding: 23px;
+            border-radius: 28px;
+        }
+
+        .product-main-image {
+            height: 360px;
+            border-radius: 22px;
+        }
+
+        .product-actions {
+            flex-direction: column;
+        }
+
+        .product-add-btn,
+        .product-back-btn {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block modal_cart %}
-	{% include "includes/cart_button.html" %}
+    {% include "includes/cart_button.html" %}
 {% endblock %}
 
 {% block content %}
-     <div class="container mt-5">
-                        <div class="card mb-4 custom-shadow">
-                            <div class="row">
-                                <!-- Миниатюры -->
-                                <div class="col-md-4">
-                                    <img src="{{ product.image.url }}"
-                                        class="img-thumbnail" data-bs-toggle="modal" data-bs-target="#imageModal1">
-                                </div>
-                                <div class="col-md-4 ">
-                                    <p class="product_id mt-3">id: {{ product.display_id }}</p>
-                                </div>
-                                <!-- Увеличить изображение в модальном окне -->
-                                <div class="modal fade" id="imageModal1" tabindex="-1"
-                                    aria-labelledby="imageModal1Label" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="imageModal1Label">Figure 1</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <img src="{{ product.image.url }}"
-                                                    class="img-fluid" alt="Изображение 1">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Описание товара -->
-                            <div class="card-body">
-                                <p class="card-text">Price: <strong>{{ product.sell_price }} $</strong></p>
-                                <h5 class="card-title">{{ product.name }}</h5>
-                                <p class="card-text">{{ product.description }}</p>
-                                <a href="{% url 'cart:cart_add' %}" class="btn btn-dark add-to-cart"
-                                data-product-id="{{ product.id }}">
-                                {% csrf_token %}
-                                Add to basket</a>
-                            </div>
+<section class="product-page">
+    <div class="container">
+
+        <div class="product-breadcrumb">
+            <a href="{% url 'main:index' %}">Home</a>
+            <i class="fas fa-chevron-right"></i>
+            <a href="{% url 'catalog:index' 'all' %}">Catalogue</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>{{ product.name }}</span>
+        </div>
+
+        <div class="product-layout">
+
+            <!-- Image -->
+            <div class="product-gallery-card">
+                <div
+                    class="product-main-image"
+                    data-bs-toggle="modal"
+                    data-bs-target="#productImageModal">
+
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'deps/images/Not found image.png' %}" alt="Product image unavailable">
+                    {% endif %}
+
+                    <div class="zoom-hint">
+                        <i class="fas fa-search-plus"></i>
+                        Click to enlarge
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information -->
+            <div class="product-info-card">
+
+                <div class="product-top-labels">
+                    <div class="product-id-pill">
+                        <i class="fas fa-hashtag"></i>
+                        ID {{ product.display_id }}
+                    </div>
+
+                    <div class="product-stock-pill">
+                        <i class="fas fa-check-circle"></i>
+                        {{ product.quantity }} available
+                    </div>
+
+                    {% if product.discount %}
+                        <div class="product-sale-pill">
+                            <i class="fas fa-percent"></i>
+                            {{ product.discount }}% off
+                        </div>
+                    {% endif %}
+                </div>
+
+                <h1 class="product-title">{{ product.name }}</h1>
+
+                <p class="product-description-short">
+                    {{ product.description|truncatechars:190 }}
+                </p>
+
+                <div class="price-panel">
+                    <span class="price-label">Price</span>
+
+                    <div class="price-row">
+                        {% if product.discount %}
+                            <strong class="current-product-price">{{ product.sell_price|floatformat:2 }} $</strong>
+                            <span class="old-product-price">{{ product.price|floatformat:2 }} $</span>
+                        {% else %}
+                            <strong class="current-product-price">{{ product.price|floatformat:2 }} $</strong>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="product-actions">
+                    <a
+                        href="{% url 'cart:cart_add' %}"
+                        class="add-to-cart product-add-btn"
+                        data-product-id="{{ product.id }}">
+                        <i class="fas fa-cart-plus"></i>
+                        Add to basket
+                    </a>
+
+                    <a href="{% url 'catalog:index' 'all' %}" class="product-back-btn">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to catalogue
+                    </a>
+                </div>
+
+                <div class="product-features">
+                    <div class="product-feature">
+                        <div class="product-feature-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div>
+                            <h3>Simple purchase flow</h3>
+                            <p>Add this product to your basket and proceed to checkout whenever you are ready.</p>
                         </div>
                     </div>
+
+                    <div class="product-feature">
+                        <div class="product-feature-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div>
+                            <h3>Delivery information available</h3>
+                            <p>Review our delivery page for the full explanation of how orders are handled.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Full description -->
+        <section class="product-details-section">
+            <div class="product-details-label">
+                <i class="fas fa-align-left"></i>
+                Product details
+            </div>
+
+            <h2>About this item</h2>
+
+            <p>
+                {{ product.description }}
+            </p>
+        </section>
+
+    </div>
+</section>
+
+<!-- Image Modal -->
+<div class="modal fade" id="productImageModal" tabindex="-1" aria-labelledby="productImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productImageModalLabel">{{ product.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body text-center">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="product-modal-image" alt="{{ product.name }}">
+                {% else %}
+                    <img src="{% static 'deps/images/Not found image.png' %}" class="product-modal-image" alt="Product image unavailable">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-main">
+
+            <div class="footer-column">
+                <h4>Help</h4>
+                <ul>
+                    <li><a href="#">How to place an order</a></li>
+                    <li><a href="{% url 'main:delivery' %}">Delivery and payment</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Privacy and data protection</a></li>
+                    <li><a href="#">Terms and conditions</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Loyalty program</h4>
+                <ul>
+                    <li><a href="#">Treasure Chest rewards</a></li>
+                    <li><a href="#">Gift cards</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="{% url 'main:about' %}">About us</a></li>
+                    <li><a href="#">News</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Partnerships</a></li>
+                    <li><a href="{% url 'main:contact' %}">Contact details</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Catalog</h4>
+                <ul>
+                    <li><a href="#">Living room furniture</a></li>
+                    <li><a href="#">Bedroom furniture</a></li>
+                    <li><a href="#">Tables and chairs</a></li>
+                    <li><a href="#">Home décor</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <a href="#" class="footer-subscribe-btn">
+                    <span>Subscribe to updates</span>
+                    <i class="fas fa-paper-plane"></i>
+                </a>
+
+                <div class="footer-contacts">
+                    <p><i class="fas fa-phone-alt"></i> +353 857839331</p>
+                    <p><i class="fas fa-envelope"></i> info@treasurechest.ie</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-socials">
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
+        </div>
+
+        <div class="footer-legal">
+            <p>2026 © Treasure Chest. All rights reserved.</p>
+            <p>
+                The information on this website is presented for demonstration purposes.
+                Final product details are confirmed during checkout.
+            </p>
+        </div>
+    </div>
+</footer>
+
+<a href="#" id="back-to-top" class="back-to-top-btn" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</a>
 {% endblock %}
