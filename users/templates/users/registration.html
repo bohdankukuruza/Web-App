@@ -1,86 +1,415 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block css %}
+<style>
+    .auth-page {
+        min-height: 82vh;
+        padding: 62px 0 88px;
+        background: #f8f9fa;
+    }
+
+    .auth-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(460px, 0.95fr);
+        gap: 38px;
+        align-items: stretch;
+    }
+
+    .auth-showcase {
+        position: relative;
+        min-height: 720px;
+        padding: 48px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+        border-radius: 36px;
+        color: #fff;
+        background:
+            linear-gradient(145deg, rgba(24, 28, 33, 0.94), rgba(58, 47, 33, 0.84)),
+            url("{% static 'deps/images/bg-image.jpg' %}") center/cover no-repeat;
+        box-shadow: 0 28px 70px rgba(24, 28, 33, 0.22);
+    }
+
+    .auth-badge {
+        width: fit-content;
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(8px);
+        font-size: 14px;
+        font-weight: 750;
+    }
+
+    .auth-showcase h1 {
+        max-width: 660px;
+        margin: 26px 0 18px;
+        font-size: clamp(38px, 4vw, 58px);
+        line-height: 1.08;
+        font-weight: 900;
+    }
+
+    .auth-showcase > div:first-child p {
+        max-width: 620px;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.84);
+        font-size: 18px;
+        line-height: 1.8;
+    }
+
+    .auth-benefits {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-top: 42px;
+    }
+
+    .auth-benefit {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.11);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+    }
+
+    .auth-benefit-icon {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.16);
+        font-size: 18px;
+    }
+
+    .auth-benefit h3 {
+        margin: 0 0 5px;
+        color: #fff;
+        font-size: 17px;
+        font-weight: 850;
+    }
+
+    .auth-benefit p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.77);
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    .auth-panel {
+        padding: 42px;
+        border-radius: 36px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 24px 65px rgba(31, 41, 55, 0.1);
+    }
+
+    .auth-panel-header {
+        margin-bottom: 32px;
+    }
+
+    .auth-panel-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        margin-bottom: 18px;
+        border-radius: 999px;
+        background: #f5ead7;
+        color: #9a6700;
+        font-size: 13px;
+        font-weight: 850;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .auth-panel h2 {
+        margin-bottom: 12px;
+        color: #1f2937;
+        font-size: clamp(32px, 3vw, 44px);
+        font-weight: 900;
+        line-height: 1.15;
+    }
+
+    .auth-panel-header p {
+        margin: 0;
+        color: #667085;
+        font-size: 16px;
+        line-height: 1.75;
+    }
+
+    .auth-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+    }
+
+    .auth-field.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .auth-field label {
+        display: block;
+        margin-bottom: 9px;
+        color: #344054;
+        font-size: 14px;
+        font-weight: 850;
+    }
+
+    .auth-form input[type="text"],
+    .auth-form input[type="email"],
+    .auth-form input[type="password"] {
+        width: 100%;
+        min-height: 54px;
+        padding: 14px 16px;
+        border: 1px solid #d0d5dd;
+        border-radius: 16px;
+        background: #fff;
+        color: #1f2937;
+        font-size: 16px;
+        outline: none;
+        transition: 0.22s ease;
+    }
+
+    .auth-form input:focus {
+        border-color: #8cab4f;
+        box-shadow: 0 0 0 4px rgba(140, 171, 79, 0.15);
+    }
+
+    .auth-error {
+        margin-top: 8px;
+        color: #b42318;
+        font-size: 14px;
+        line-height: 1.55;
+        font-weight: 650;
+    }
+
+    .auth-error ul {
+        margin: 0;
+        padding-left: 18px;
+    }
+
+    .auth-submit-btn {
+        width: 100%;
+        min-height: 58px;
+        margin-top: 26px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: none;
+        border-radius: 18px;
+        background: #252a32;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 900;
+        transition: 0.25s ease;
+    }
+
+    .auth-submit-btn:hover {
+        background: #111827;
+        transform: translateY(-2px);
+    }
+
+    .auth-bottom-text {
+        margin-top: 24px;
+        text-align: center;
+        color: #667085;
+        font-size: 15px;
+    }
+
+    .auth-bottom-text a {
+        color: #252a32;
+        text-decoration: none;
+        font-weight: 850;
+    }
+
+    .auth-bottom-text a:hover {
+        color: #8cab4f;
+    }
+
+    @media (max-width: 1199px) {
+        .auth-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .auth-showcase {
+            min-height: auto;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .auth-page {
+            padding: 38px 0 70px;
+        }
+
+        .auth-showcase,
+        .auth-panel {
+            padding: 26px;
+            border-radius: 26px;
+        }
+
+        .auth-form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block modal_cart %}
-	{% include "includes/cart_button.html" %}
+    {% include "includes/cart_button.html" %}
 {% endblock %}
 
 {% block content %}
-     <div class="row">
-                        <div class="container mt-5">
-                            <div class="row justify-content-center">
-                                <div class="col-md-9 bg-white p-4 mb-5 mx-2 rounded custom-shadow">
-                                    <h2 class="text-center mb-4">Регистрация</h2>
-                                    <form action="{% url "user:registration" %}" method="post">
-                                        {% csrf_token %}
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="id_first_name" class="form-label">Имя*</label>
-                                                <input type="text" class="form-control" id="id_first_name"
-                                                    value="{% if form.first_name.value %}{{ form.first_name.value }}{% endif %}"
-                                                    name="first_name"
-                                                    placeholder="Введите ваше имя" required>
-                                                    {% if form.first_name.errors %}
-                                                    	<div class="alert alert-danger alert-dismissible fade show">{{ form.first_name.errors }}</div>
-                                                    {% endif %} 
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="id_last_name" class="form-label">Фамилия*</label>
-                                                <input type="text" class="form-control" id="id_last_name"
-                                                       value="{% if form.last_name.value %}{{ form.last_name.value }}{% endif %}"
-                                                       name="last_name"
-                                                       placeholder="Введите вашу фамилию" required>
-                                                       {% if form.last_name.errors %}
-                                                    	<div class="alert alert-danger alert-dismissible fade show">{{ form.last_name.errors }}</div>
-                                                       {% endif %}
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="id_username" class="form-label">Имя пользователя*</label>
-                                                <input type="text" class="form-control" id="id_username"
-                                                    name="username"
-                                                    value="{% if form.username.value %}{{ form.username.value }}{% endif %}"
-                                                    placeholder="Введите ваше имя пользователя" required>
-                                                    {% if form.username.errors %}
-                                                    	<div class="alert alert-danger alert-dismissible fade show">{{ form.username.errors }}</div>
-                                                    {% endif %}
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="id_email" class="form-label">Email*</label>
-                                                <input type="email" class="form-control" id="id_email"
-                                                    name="email"
-                                                    value="{% if form.email.value %}{{ form.email.value }}{% endif %}"
-                                                    placeholder="Введите ваш email" required>
-                                                    {% if form.email.errors %}
-                                                    	<div class="alert alert-danger alert-dismissible fade show">{{ form.email.errors }}</div>
-                                                    {% endif %}
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="id_password1" class="form-label">Пароль*</label>
-                                                <input type="password" class="form-control" id="id_password1"
-                                                    name="password1"
-                                                    value="{% if form.password1.value %}{{ form.password1.value }}{% endif %}"
-                                                    placeholder="Введите пароль" required>
-                                                    {% if form.password1.errors %}
-                                                    	<div class="alert alert-danger alert-dismissible fade show">{{ form.password1.errors }}</div>
-                                                    {% endif %}
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="id_password2" class="form-label">Подтверждение пароля*</label>
-                                                <input type="password" class="form-control" id="id_password2"
-                                                    name="password2"
-                                                    value="{% if form.password2.value %}{{ form.password2.value }}{% endif %}"
-                                                    placeholder="Подтвердите пароль" required>
-                                                    {% if form.password2.errors %}
-                                                    	<div class="alert alert-danger alert-dismissible fade show">{{ form.password2.errors }}</div>
-                                                    {% endif %}
-                                            </div>
-                                        </div>
-                                        <button type="submit"
-                                            class="btn btn-dark btn-block">Зарегистрироваться</button>
-                                    </form>
-                                </div>
+<section class="auth-page">
+    <div class="container">
+        <div class="auth-layout">
+
+            <div class="auth-showcase">
+                <div>
+                    <div class="auth-badge">
+                        <i class="fas fa-user-plus"></i>
+                        Join Treasure Chest
+                    </div>
+
+                    <h1>Create an account and shop with more convenience</h1>
+
+                    <p>
+                        Register to manage your profile, keep your shopping cart connected to your account,
+                        and enjoy a smoother checkout experience.
+                    </p>
+
+                    <div class="auth-benefits">
+                        <div class="auth-benefit">
+                            <div class="auth-benefit-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div>
+                                <h3>Personal shopping cart</h3>
+                                <p>Save selected products and return to them later.</p>
+                            </div>
+                        </div>
+
+                        <div class="auth-benefit">
+                            <div class="auth-benefit-icon">
+                                <i class="fas fa-receipt"></i>
+                            </div>
+                            <div>
+                                <h3>Order history</h3>
+                                <p>Track your placed orders directly from your profile.</p>
+                            </div>
+                        </div>
+
+                        <div class="auth-benefit">
+                            <div class="auth-benefit-icon">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div>
+                                <h3>Account management</h3>
+                                <p>Update your details whenever you need.</p>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="auth-panel">
+                <div class="auth-panel-header">
+                    <div class="auth-panel-label">
+                        <i class="fas fa-id-card"></i>
+                        Registration
+                    </div>
+
+                    <h2>Create your account</h2>
+
+                    <p>
+                        Fill in your details below to start using Treasure Chest.
+                    </p>
+                </div>
+
+                <form action="{% url 'user:registration' %}" method="post" class="auth-form">
+                    {% csrf_token %}
+
+                    <div class="auth-form-grid">
+
+                        <div class="auth-field">
+                            <label for="{{ form.first_name.id_for_label }}">First name</label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                                <div class="auth-error">{{ form.first_name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="{{ form.last_name.id_for_label }}">Last name</label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                                <div class="auth-error">{{ form.last_name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="auth-field full-width">
+                            <label for="{{ form.username.id_for_label }}">Username</label>
+                            {{ form.username }}
+                            {% if form.username.errors %}
+                                <div class="auth-error">{{ form.username.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="auth-field full-width">
+                            <label for="{{ form.email.id_for_label }}">Email address</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="auth-error">{{ form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="{{ form.password1.id_for_label }}">Password</label>
+                            {{ form.password1 }}
+                            {% if form.password1.errors %}
+                                <div class="auth-error">{{ form.password1.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="{{ form.password2.id_for_label }}">Confirm password</label>
+                            {{ form.password2 }}
+                            {% if form.password2.errors %}
+                                <div class="auth-error">{{ form.password2.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                    {% if form.non_field_errors %}
+                        <div class="auth-error" style="margin-top: 18px;">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <button type="submit" class="auth-submit-btn">
+                        <i class="fas fa-user-check"></i>
+                        Create account
+                    </button>
+                </form>
+
+                <div class="auth-bottom-text">
+                    Already have an account?
+                    <a href="{% url 'user:login' %}">Sign in</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
 {% endblock %}

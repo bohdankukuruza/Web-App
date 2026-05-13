@@ -3,218 +3,462 @@
 {% load socialaccount %}
 
 {% block css %}
-    <style>
-        /* Custom Styles for Auth Forms */
-    body {
-        background-color: #f8f8f8; /* Легкий фон для страницы */
+<style>
+    .login-page {
+        min-height: 82vh;
+        padding: 62px 0 88px;
+        background: #f8f9fa;
     }
 
-    .auth-container {
-        padding: 60px 0; /* Отступы сверху и снизу */
+    .login-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(430px, 0.88fr);
+        gap: 38px;
+        align-items: stretch;
     }
 
-    .auth-form-card {
-        background-color: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        padding: 40px;
-        max-width: 500px; /* Ограничиваем ширину формы */
-        margin: auto; /* Центрируем форму */
-    }
-
-    .auth-form-card h2 {
-        font-size: 32px;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 30px;
-        text-align: center;
-    }
-
-    .form-label {
-        font-weight: 500;
-        color: #555;
-        margin-bottom: 8px;
-        display: block; /* Важно для отступов */
-    }
-
-    .form-control {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 12px 15px;
-        font-size: 16px;
-        box-shadow: none; /* Убираем стандартную тень Bootstrap */
-        transition: border-color 0.3s ease;
-    }
-
-    .form-control:focus {
-        border-color: #c7a159; /* Золотистый акцент при фокусе */
-        box-shadow: 0 0 0 0.2rem rgba(199, 161, 89, 0.25); /* Легкая тень при фокусе */
-    }
-
-    .btn-primary-custom {
-        background-color: #c7a159; /* Золотистый цвет для основной кнопки */
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 12px 25px;
-        font-size: 18px;
-        font-weight: 600;
-        width: 100%; /* Занимаем всю ширину */
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    .btn-primary-custom:hover {
-        background-color: #b38f4d; /* Темнее при наведении */
-        transform: translateY(-2px);
-        color: white; /* Убедимся, что цвет текста остается белым */
-    }
-
-    .auth-links {
-        text-align: center;
-        margin-top: 25px;
-        font-size: 15px;
-    }
-
-    .auth-links a {
-        color: #888;
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-
-    .auth-links a:hover {
-        color: #c7a159;
-    }
-
-    .auth-links span {
-        color: #bbb;
-        margin: 0 10px;
-    }
-
-    .auth-social-heading {
-        text-align: center;
-        color: #777;
-        margin: 30px 0 20px 0;
+    .login-showcase {
         position: relative;
-    }
-
-    .auth-social-heading::before,
-    .auth-social-heading::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        width: 35%; /* Ширина линии */
-        height: 1px;
-        background-color: #eee;
-    }
-
-    .auth-social-heading::before {
-        left: 0;
-    }
-
-    .auth-social-heading::after {
-        right: 0;
-    }
-
-    .social-login-buttons {
+        min-height: 690px;
+        padding: 48px;
         display: flex;
-        flex-wrap: wrap; /* Для переноса кнопок на новую строку */
-        justify-content: center;
-        gap: 15px; /* Отступы между кнопками */
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+        border-radius: 36px;
+        color: #fff;
+        background:
+            linear-gradient(145deg, rgba(24, 28, 33, 0.94), rgba(58, 47, 33, 0.84)),
+            url("{% static 'deps/images/bg-image.jpg' %}") center/cover no-repeat;
+        box-shadow: 0 28px 70px rgba(24, 28, 33, 0.22);
     }
 
-    .social-login-buttons .btn {
+    .login-badge {
+        width: fit-content;
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(8px);
+        font-size: 14px;
+        font-weight: 750;
+    }
+
+    .login-showcase h1 {
+        max-width: 660px;
+        margin: 26px 0 18px;
+        font-size: clamp(38px, 4vw, 58px);
+        line-height: 1.08;
+        font-weight: 900;
+    }
+
+    .login-showcase > div:first-child p {
+        max-width: 620px;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.84);
+        font-size: 18px;
+        line-height: 1.8;
+    }
+
+    .login-benefits {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-top: 42px;
+    }
+
+    .login-benefit {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.11);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(8px);
+    }
+
+    .login-benefit-icon {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #f0f2f5; /* Светлый фон для социальных кнопок */
-        color: #555;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 10px 20px;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.16);
+        font-size: 18px;
+    }
+
+    .login-benefit h3 {
+        margin: 0 0 5px;
+        color: #fff;
+        font-size: 17px;
+        font-weight: 850;
+    }
+
+    .login-benefit p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.77);
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    .login-panel {
+        padding: 42px;
+        border-radius: 36px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 24px 65px rgba(31, 41, 55, 0.1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .login-panel-header {
+        margin-bottom: 30px;
+    }
+
+    .login-panel-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        margin-bottom: 18px;
+        border-radius: 999px;
+        background: #f5ead7;
+        color: #9a6700;
+        font-size: 13px;
+        font-weight: 850;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .login-panel h2 {
+        margin-bottom: 12px;
+        color: #1f2937;
+        font-size: clamp(32px, 3vw, 44px);
+        font-weight: 900;
+        line-height: 1.15;
+    }
+
+    .login-panel-header p {
+        margin: 0;
+        color: #667085;
         font-size: 16px;
-        font-weight: 500;
+        line-height: 1.75;
+    }
+
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .login-field label {
+        display: block;
+        margin-bottom: 9px;
+        color: #344054;
+        font-size: 14px;
+        font-weight: 850;
+    }
+
+    .login-field input[type="text"],
+    .login-field input[type="password"] {
+        width: 100%;
+        min-height: 56px;
+        padding: 14px 16px;
+        border: 1px solid #d0d5dd;
+        border-radius: 16px;
+        background: #fff;
+        color: #1f2937;
+        font-size: 16px;
+        outline: none;
+        transition: 0.22s ease;
+    }
+
+    .login-field input:focus {
+        border-color: #8cab4f;
+        box-shadow: 0 0 0 4px rgba(140, 171, 79, 0.15);
+    }
+
+    .login-error {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px 18px;
+        border-radius: 18px;
+        background: #fff1f0;
+        border: 1px solid #ffd5d2;
+        color: #b42318;
+        font-size: 15px;
+        font-weight: 750;
+        line-height: 1.6;
+    }
+
+    .login-error i {
+        margin-top: 3px;
+        flex-shrink: 0;
+    }
+
+    .login-submit-btn {
+        width: 100%;
+        min-height: 58px;
+        margin-top: 4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: none;
+        border-radius: 18px;
+        background: #252a32;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 900;
+        transition: 0.25s ease;
+    }
+
+    .login-submit-btn:hover {
+        background: #111827;
+        transform: translateY(-2px);
+    }
+
+    .login-links {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+    }
+
+    .login-links a {
+        color: #252a32;
         text-decoration: none;
-        transition: background-color 0.3s ease, border-color 0.3s ease;
+        font-size: 15px;
+        font-weight: 850;
+        transition: 0.2s ease;
     }
 
-    .social-login-buttons .btn:hover {
-        background-color: #e0e2e5;
-        border-color: #c7a159;
-        color: #333;
+    .login-links a:hover {
+        color: #8cab4f;
     }
 
-    .social-login-buttons .btn img {
-        margin-right: 10px;
-        width: 20px;
-        height: 20px;
+    .login-divider {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin: 32px 0 22px;
+        color: #98a2b3;
+        font-size: 14px;
+        font-weight: 750;
     }
 
-    /* Адаптивность для маленьких экранов */
-    @media (max-width: 576px) {
-        .auth-form-card {
-            padding: 25px;
-            margin: 0 15px;
+    .login-divider::before,
+    .login-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: rgba(31, 41, 55, 0.12);
+    }
+
+    .google-login-btn {
+        width: 100%;
+        min-height: 58px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 14px 18px;
+        border-radius: 18px;
+        background: #fff;
+        color: #1f2937;
+        border: 1px solid #d0d5dd;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 850;
+        transition: 0.25s ease;
+    }
+
+    .google-login-btn img {
+        width: 22px;
+        height: 22px;
+    }
+
+    .google-login-btn:hover {
+        color: #1f2937;
+        border-color: #8cab4f;
+        background: #fafcf6;
+        transform: translateY(-2px);
+        box-shadow: 0 16px 35px rgba(31, 41, 55, 0.08);
+    }
+
+    @media (max-width: 1199px) {
+        .login-layout {
+            grid-template-columns: 1fr;
         }
-        .auth-form-card h2 {
-            font-size: 26px;
-        }
-        .social-login-buttons .btn {
-            width: 100%; /* Кнопки соцсетей на всю ширину на очень маленьких экранах */
+
+        .login-showcase {
+            min-height: auto;
         }
     }
-    </style>
+
+    @media (max-width: 767px) {
+        .login-page {
+            padding: 38px 0 70px;
+        }
+
+        .login-showcase,
+        .login-panel {
+            padding: 26px;
+            border-radius: 26px;
+        }
+
+        .login-links {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
 {% endblock %}
 
-
 {% block modal_cart %}
-	{% include "includes/cart_button.html" %}
+    {% include "includes/cart_button.html" %}
 {% endblock %}
 
 {% block content %}
-     <div class="auth-container">
-    <div class="row justify-content-center">
-        <div class="col-lg-6 col-md-8 auth-form-card">
-            <h2 class="text-center">Log in</h2>
-            <form action="{% url 'user:login' %}" method="post">
-                {% csrf_token %}
-                {% if request.GET.next %}
-                    <input type="hidden" name="next" value="{{request.GET.next}}">
-                {% endif %}
+<section class="login-page">
+    <div class="container">
+        <div class="login-layout">
 
-                <div class="mb-3">
-                    <label for="id_username" class="form-label">Username</label>
-                    <input type="text" class="form-control"
-                           value="{% if form.username.value %}{{ form.username.value }}{% endif %}"
-                           name="username" id="id_username" placeholder="Enter your username" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="id_password" class="form-label">Пароль</label>
-                    <input type="password" class="form-control" name="password" id="id_password" placeholder="Enter your password" required>
-                </div>
-
-                {% if form.errors %}
-                    <div class="alert alert-danger" role="alert">
-                        Incorrect username or password.
+            <!-- Left visual section -->
+            <div class="login-showcase">
+                <div>
+                    <div class="login-badge">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Welcome back
                     </div>
-                {% endif %}
 
-                <button type="submit" class="btn btn-primary-custom mt-3">Log in</button>
-            </form>
+                    <h1>Sign in and continue your shopping journey</h1>
 
-            <div class="auth-links">
-                <a href="{% url 'account_reset_password' %}">Forgotten your password?</a> <span>|</span> <a href="{% url "user:registration" %}">Create an account</a>
+                    <p>
+                        Access your Treasure Chest account to manage your profile,
+                        review saved cart items, and check your order history.
+                    </p>
+
+                    <div class="login-benefits">
+                        <div class="login-benefit">
+                            <div class="login-benefit-icon">
+                                <i class="fas fa-shopping-basket"></i>
+                            </div>
+                            <div>
+                                <h3>Return to your basket</h3>
+                                <p>Continue shopping with the items already saved in your cart.</p>
+                            </div>
+                        </div>
+
+                        <div class="login-benefit">
+                            <div class="login-benefit-icon">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div>
+                                <h3>Manage your profile</h3>
+                                <p>Update personal details and keep your account organised.</p>
+                            </div>
+                        </div>
+
+                        <div class="login-benefit">
+                            <div class="login-benefit-icon">
+                                <i class="fas fa-receipt"></i>
+                            </div>
+                            <div>
+                                <h3>View previous orders</h3>
+                                <p>Track your purchases directly from your account page.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <p class="auth-social-heading">Or log in via</p>
+            <!-- Right login form -->
+            <div class="login-panel">
+                <div class="login-panel-header">
+                    <div class="login-panel-label">
+                        <i class="fas fa-lock"></i>
+                        Secure login
+                    </div>
 
-            <div class="social-login-buttons">
-                <a href="{% provider_login_url 'google' %}" class="btn">
-                    <img src="{% static "deps/icons/google.svg" %}" alt="Google icon">
-                    Google
+                    <h2>Log in</h2>
+
+                    <p>
+                        Enter your username and password to access your account.
+                    </p>
+                </div>
+
+                <form action="{% url 'user:login' %}" method="post" class="login-form">
+                    {% csrf_token %}
+
+                    {% if request.GET.next %}
+                        <input type="hidden" name="next" value="{{ request.GET.next }}">
+                    {% endif %}
+
+                    <div class="login-field">
+                        <label for="id_username">Username</label>
+                        <input
+                            type="text"
+                            name="username"
+                            id="id_username"
+                            value="{% if form.username.value %}{{ form.username.value }}{% endif %}"
+                            placeholder="Enter your username"
+                            required>
+                    </div>
+
+                    <div class="login-field">
+                        <label for="id_password">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            id="id_password"
+                            placeholder="Enter your password"
+                            required>
+                    </div>
+
+                    {% if form.errors %}
+                        <div class="login-error">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span>Incorrect username or password. Please try again.</span>
+                        </div>
+                    {% endif %}
+
+                    <button type="submit" class="login-submit-btn">
+                        <i class="fas fa-arrow-right-to-bracket"></i>
+                        Log in
+                    </button>
+                </form>
+
+                <div class="login-links">
+                    <a href="{% url 'account_reset_password' %}">
+                        Forgotten your password?
+                    </a>
+
+                    <a href="{% url 'user:registration' %}">
+                        Create an account
+                    </a>
+                </div>
+
+                <div class="login-divider">
+                    Or continue with
+                </div>
+
+                <a href="{% provider_login_url 'google' %}" class="google-login-btn">
+                    <img src="{% static 'deps/icons/google.svg' %}" alt="Google icon">
+                    Continue with Google
                 </a>
             </div>
+
         </div>
     </div>
-</div>
+</section>
 {% endblock %}
