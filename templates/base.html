@@ -44,10 +44,10 @@
                 <div class="user-actions">
                     {% if not user.is_authenticated %}
                         <a href="{% url 'user:login' %}" class="action-btn">
-                            <i class="fas fa-sign-in-alt"></i> Войти
+                            <i class="fas fa-sign-in-alt"></i> Log in
                         </a>
                         <a href="#" class="action-btn">
-                            <i class="fas fa-user-plus"></i> Регистрация
+                            <i class="fas fa-user-plus"></i> Registration
                         </a>
                     {% else %}
                         <div class="dropdown header-dropdown">
@@ -56,19 +56,19 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{% url 'user:profile' %}">
-                                    <i class="fas fa-user-circle"></i> Личный кабинет
+                                    <i class="fas fa-user-circle"></i> My Account
                                 </a></li>
                                 <li><a class="dropdown-item" href="{% url 'user:users_cart' %}">
-                                    <i class="fas fa-shopping-bag"></i> Моя корзина
+                                    <i class="fas fa-shopping-bag"></i> My basket
                                 </a></li>
                                 {% if user.is_admin or user.is_staff %}
                                     <li><a class="dropdown-item" href="{% url 'admin:index' %}">
-                                        <i class="fas fa-cog"></i> Админ панель
+                                        <i class="fas fa-cog"></i> Control panel
                                     </a></li>
                                 {% endif %}
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="{% url 'user:logout' %}">
-                                    <i class="fas fa-sign-out-alt"></i> Выйти
+                                    <i class="fas fa-sign-out-alt"></i> Log out
                                 </a></li>
                             </ul>
                         </div>
@@ -90,7 +90,7 @@
                 <nav class="main-nav">
                     <div class="dropdown header-dropdown">
                         <button class="catalog-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-th-large"></i> Каталог
+                            <i class="fas fa-th-large"></i> Catalogue
                         </button>
                         <ul class="dropdown-menu">
                             {% tag_categories as categories %}
@@ -101,10 +101,10 @@
                             {% endfor %}
                         </ul>
                     </div>
-                    <a href="{% url 'main:index' %}" class="nav-link-custom">Главная</a>
-                    <a href="{% url 'main:about' %}" class="nav-link-custom">О нас</a>
-                    <a href="#" class="nav-link-custom">Доставка</a>
-                    <a href="#" class="nav-link-custom">Контакты</a>
+                    <a href="{% url 'main:index' %}" class="nav-link-custom">Home</a>
+                    <a href="{% url 'main:about' %}" class="nav-link-custom">About us</a>
+                    <a href="#" class="nav-link-custom">Delivery</a>
+                    <a href="#" class="nav-link-custom">Contact details</a>
                 </nav>
 
                 <!-- Search and Cart -->
@@ -137,7 +137,7 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <h3 class="text-center mb-4">Корзина</h3>
+                    <h3 class="text-center mb-4">Shopping basket</h3>
                     <div class="container" id="cart-items-container">
                         <!-- Разметка корзины -->
                         <div id="cart-items-container-modal">

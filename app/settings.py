@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from decouple import config
 from pathlib import Path
 
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -192,19 +190,3 @@ EMAIL_TIMEOUT = 20
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-
-# MAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-# EMAIL_HOST = "smtp.resend.com"
-# EMAIL_PORT = 465
-# EMAIL_USE_SSL = True
-# EMAIL_USE_TLS = False
-#
-# EMAIL_HOST_USER = "resend"
-# EMAIL_HOST_PASSWORD = config("RESEND_API_KEY")
-
-DEFAULT_FROM_EMAIL = "onboarding@resend.dev"
-EMAIL_TIMEOUT = 20
-print("SMTP USER:", EMAIL_HOST_USER)
-print("SMTP PASS SET:", bool(EMAIL_HOST_PASSWORD))
-print("SMTP PASS LEN:", len(EMAIL_HOST_PASSWORD or ""))
-print("SMTP PASS LAST4:", (EMAIL_HOST_PASSWORD or "")[-4:])

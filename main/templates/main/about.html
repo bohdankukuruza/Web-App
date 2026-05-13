@@ -2,94 +2,568 @@
 {% load static %}
 
 {% block css %}
-    <link rel="stylesheet" href="{% static "deps/css/my_footer_css.css" %}">
+<style>
+    .about-page {
+        background: #f8f9fa;
+        padding-bottom: 80px;
+    }
+
+    .about-hero {
+        position: relative;
+        min-height: 430px;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        border-radius: 0 0 36px 36px;
+        background:
+            linear-gradient(90deg, rgba(24, 28, 33, 0.88), rgba(24, 28, 33, 0.55)),
+            url("{% static 'deps/images/bg-image.jpg' %}") center/cover no-repeat;
+        color: #fff;
+    }
+
+    .about-hero-content {
+        max-width: 760px;
+        padding: 80px 0;
+    }
+
+    .about-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 16px;
+        margin-bottom: 22px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.16);
+        backdrop-filter: blur(8px);
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .about-hero h1 {
+        font-size: clamp(38px, 5vw, 64px);
+        font-weight: 800;
+        line-height: 1.08;
+        margin-bottom: 22px;
+    }
+
+    .about-hero p {
+        max-width: 680px;
+        font-size: 18px;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 32px;
+    }
+
+    .about-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 24px;
+        border-radius: 14px;
+        background: #fff;
+        color: #1f2937;
+        text-decoration: none;
+        font-weight: 700;
+        transition: 0.25s ease;
+    }
+
+    .about-btn:hover {
+        transform: translateY(-2px);
+        color: #1f2937;
+        box-shadow: 0 16px 30px rgba(0, 0, 0, 0.18);
+    }
+
+    .about-section {
+        margin-top: 72px;
+    }
+
+    .section-label {
+        display: inline-block;
+        margin-bottom: 14px;
+        color: #b7791f;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .section-title {
+        font-size: clamp(30px, 4vw, 44px);
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 20px;
+    }
+
+    .section-text {
+        color: #5b6472;
+        font-size: 17px;
+        line-height: 1.8;
+        margin-bottom: 0;
+    }
+
+    .about-image-card {
+        border-radius: 28px;
+        overflow: hidden;
+        min-height: 420px;
+        box-shadow: 0 24px 60px rgba(24, 28, 33, 0.16);
+    }
+
+    .about-image-card img {
+        width: 100%;
+        height: 100%;
+        min-height: 420px;
+        object-fit: cover;
+    }
+
+    .value-card,
+    .project-card {
+        height: 100%;
+        padding: 30px;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        border-radius: 24px;
+        background: #fff;
+        box-shadow: 0 18px 45px rgba(31, 41, 55, 0.07);
+        transition: 0.25s ease;
+    }
+
+    .value-card:hover,
+    .project-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 24px 55px rgba(31, 41, 55, 0.12);
+    }
+
+    .card-icon {
+        width: 58px;
+        height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 22px;
+        border-radius: 18px;
+        background: #f5ead7;
+        color: #9a6700;
+        font-size: 24px;
+    }
+
+    .value-card h3,
+    .project-card h3 {
+        font-size: 22px;
+        font-weight: 750;
+        color: #1f2937;
+        margin-bottom: 14px;
+    }
+
+    .value-card p,
+    .project-card p {
+        margin: 0;
+        color: #667085;
+        line-height: 1.75;
+        font-size: 16px;
+    }
+
+    .about-stats {
+        padding: 42px;
+        border-radius: 30px;
+        color: #fff;
+        background: linear-gradient(135deg, #252a32, #3c3022);
+        box-shadow: 0 26px 65px rgba(24, 28, 33, 0.2);
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        display: block;
+        font-size: 42px;
+        line-height: 1.1;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .stat-label {
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 15px;
+    }
+
+    .about-cta {
+        margin-top: 72px;
+        padding: 52px;
+        border-radius: 32px;
+        background: #fff;
+        border: 1px solid rgba(31, 41, 55, 0.08);
+        box-shadow: 0 18px 50px rgba(31, 41, 55, 0.08);
+    }
+
+    .about-cta h2 {
+        font-size: clamp(28px, 4vw, 42px);
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 16px;
+    }
+
+    .about-cta p {
+        max-width: 720px;
+        margin: 0 auto 28px;
+        color: #667085;
+        font-size: 17px;
+        line-height: 1.8;
+    }
+
+    .about-cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 26px;
+        border-radius: 14px;
+        background: #252a32;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 700;
+        transition: 0.25s ease;
+    }
+
+    .about-cta-btn:hover {
+        color: #fff;
+        transform: translateY(-2px);
+        background: #111827;
+    }
+
+    @media (max-width: 991px) {
+        .about-hero {
+            min-height: 500px;
+            border-radius: 0 0 26px 26px;
+        }
+
+        .about-hero-content {
+            padding: 64px 0;
+        }
+
+        .about-image-card,
+        .about-image-card img {
+            min-height: 320px;
+        }
+
+        .about-stats {
+            padding: 32px 22px;
+        }
+
+        .stat-item {
+            margin-bottom: 24px;
+        }
+
+        .stat-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-cta {
+            padding: 36px 24px;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block modal_cart %}
-	{% include "includes/cart_button.html" %}
+    {% include "includes/cart_button.html" %}
 {% endblock %}
 
 {% block content %}
-    <div> class="mt-5 pt-5 bg-white custom-shadow"</div>
-	<h2 class="mt-5 pt-5"><strong>{{ content }}</strong></h2>
-    <p>{{ text_on_page }}</p>
+<div class="about-page">
+
+    <!-- Hero -->
+    <section class="about-hero">
+        <div class="container">
+            <div class="about-hero-content">
+                <div class="about-badge">
+                    <i class="fas fa-couch"></i>
+                    Treasure Chest
+                </div>
+
+                <h1>Furniture and décor for a home you truly enjoy</h1>
+
+                <p>
+                    Treasure Chest is a modern online furniture store designed to make home shopping
+                    simple, pleasant, and intuitive — from browsing products to placing an order.
+                </p>
+
+                <a href="{% url 'catalog:index' 'all' %}" class="about-btn">
+                    <i class="fas fa-arrow-right"></i>
+                    Explore the catalog
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+
+        <!-- About -->
+        <section class="about-section">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <span class="section-label">About us</span>
+                    <h2 class="section-title">We combine style, convenience, and a smooth shopping experience</h2>
+
+                    <p class="section-text">
+                        Our store was created for people who want to find suitable furniture quickly,
+                        compare products with ease, and complete purchases without unnecessary steps.
+                        The catalog includes items for living rooms, bedrooms, kitchens, and workspaces,
+                        while clear navigation makes the selection process effortless.
+                    </p>
+
+                    <p class="section-text mt-3">
+                        Treasure Chest is more than just a product showcase. It is a complete e-commerce
+                        experience with user accounts, a shopping cart, order creation, and a responsive interface.
+                    </p>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="about-image-card">
+                        <img src="{% static 'deps/images/1.jpg' %}" alt="Modern home interior">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Values -->
+        <section class="about-section">
+            <div class="text-center mb-5">
+                <span class="section-label">Our approach</span>
+                <h2 class="section-title">What matters to us</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="value-card">
+                        <div class="card-icon">
+                            <i class="fas fa-compass"></i>
+                        </div>
+                        <h3>Easy product discovery</h3>
+                        <p>
+                            Categories, search, and a clear catalog structure help users move
+                            from an idea to the right product faster.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="value-card">
+                        <div class="card-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>Comfortable user experience</h3>
+                        <p>
+                            We focus on a clean and intuitive interface so every step of using
+                            the website feels simple and pleasant.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="value-card">
+                        <div class="card-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Reliable shopping flow</h3>
+                        <p>
+                            The cart, authentication, and checkout process are designed to make
+                            the purchase journey clear and consistent.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Features -->
+        <section class="about-section">
+            <div class="text-center mb-5">
+                <span class="section-label">Website features</span>
+                <h2 class="section-title">What has already been built in Treasure Chest</h2>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="project-card">
+                        <div class="card-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3>Smart shopping cart</h3>
+                        <p>
+                            Users can add products, update quantities, and view the current total
+                            in a clean and convenient format.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="project-card">
+                        <div class="card-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <h3>User account system</h3>
+                        <p>
+                            Registration, login, profile management, and saved user data make the store
+                            feel closer to a real production e-commerce platform.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="project-card">
+                        <div class="card-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <h3>Order checkout</h3>
+                        <p>
+                            The checkout flow is organised into a separate, user-friendly process
+                            where customers can review and confirm their order.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="project-card">
+                        <div class="card-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>Search and product catalog</h3>
+                        <p>
+                            Product categories and search tools improve navigation and help users
+                            find suitable furniture more efficiently.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="about-section">
+            <div class="about-stats">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-item">
+                            <span class="stat-number">4+</span>
+                            <span class="stat-label">core store modules</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-item">
+                            <span class="stat-number">100%</span>
+                            <span class="stat-label">responsive interface structure</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-item">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">online access to the catalog</span>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stat-item">
+                            <span class="stat-number">Easy</span>
+                            <span class="stat-label">search, cart, and checkout flow</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="about-cta text-center">
+            <h2>Find furniture that fits your home</h2>
+            <p>
+                Browse the Treasure Chest catalog, choose your favourite items,
+                and create an interior you will enjoy every day.
+            </p>
+
+            <a href="{% url 'catalog:index' 'all' %}" class="about-cta-btn">
+                <i class="fas fa-store"></i>
+                Browse products
+            </a>
+        </section>
+
+    </div>
+</div>
 {% endblock %}
 
-
 {% block footer %}
-  <footer class="site-footer">
+<footer class="site-footer">
     <div class="container">
         <div class="footer-main">
+
             <div class="footer-column">
-                <h4>Помощь</h4>
+                <h4>Help</h4>
                 <ul>
-                    <li><a href="#">Оформление заказа</a></li>
-                    <li><a href="#">Доставка и оплата</a></li>
-                    <li><a href="#">Возврат товаров</a></li>
-                    <li><a href="#">Конфиденциальность и защита информации</a></li>
-                    <li><a href="#">Договор оферты</a></li>
+                    <li><a href="#">How to place an order</a></li>
+                    <li><a href="#">Delivery and payment</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Privacy and data protection</a></li>
+                    <li><a href="#">Terms and conditions</a></li>
                 </ul>
             </div>
 
             <div class="footer-column">
-                <h4>Программа лояльности</h4>
+                <h4>Loyalty program</h4>
                 <ul>
-                    <li><a href="#">Программа лояльности ARYA home</a></li>
-                    <li><a href="#">Подарочные карты</a></li>
+                    <li><a href="#">Treasure Chest rewards</a></li>
+                    <li><a href="#">Gift cards</a></li>
                 </ul>
             </div>
 
             <div class="footer-column">
-                <h4>Компания</h4>
+                <h4>Company</h4>
                 <ul>
-                    <li><a href="#">О компании</a></li>
-                    <li><a href="#">Новости</a></li>
-                    <li><a href="#">Вакансии</a></li>
-                    <li><a href="#">Сотрудничество</a></li>
-                    <li><a href="#">Салоны ARYA home</a></li>
-                    <li><a href="#">Контакты</a></li>
-                    <li><a href="#">События</a></li>
+                    <li><a href="{% url 'main:about' %}">About us</a></li>
+                    <li><a href="#">News</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Partnerships</a></li>
+                    <li><a href="#">Contacts</a></li>
                 </ul>
             </div>
 
             <div class="footer-column">
-                <h4>Каталог</h4>
+                <h4>Catalog</h4>
                 <ul>
-                    <li><a href="#">Постельное белье</a></li>
-                    <li><a href="#">Товары для ванной</a></li>
-                    <li><a href="#">Одежда для дома</a></li>
-                    <li><a href="#">Ароматы для дома</a></li>
-                    <li><a href="#">Посуда и приборы</a></li>
-                    <li><a href="#">Финальные Цены</a></li>
+                    <li><a href="#">Living room furniture</a></li>
+                    <li><a href="#">Bedroom furniture</a></li>
+                    <li><a href="#">Tables and chairs</a></li>
+                    <li><a href="#">Home décor</a></li>
                 </ul>
             </div>
 
             <div class="footer-column">
                 <a href="#" class="footer-subscribe-btn">
-                    <span>Подписаться на рассылку</span>
+                    <span>Subscribe to updates</span>
                     <i class="fas fa-paper-plane"></i>
                 </a>
+
                 <div class="footer-contacts">
-                    <p><i class="fas fa-phone-alt"></i> 8 (800) 200-82-80</p>
-                    <p><i class="fas fa-envelope"></i> info@aryahome.ru</p>
+                    <p><i class="fas fa-phone-alt"></i> +353 857839331</p>
+                    <p><i class="fas fa-envelope"></i> info@treasurechest.ie</p>
                 </div>
             </div>
+
         </div>
 
         <div class="footer-socials">
-            <a href="#" aria-label="VK"><i class="fab fa-vk"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
             <a href="#" aria-label="Telegram"><i class="fab fa-telegram-plane"></i></a>
-            <a href="#" aria-label="Odnoklassniki"><i class="fab fa-odnoklassniki"></i></a>
-            <a href="#" aria-label="Zen"><i class="fab fa-yandex"></i></a> </div>
+        </div>
 
         <div class="footer-legal">
-            <p>2025 © «Все права защищены. Treasure Chest»</p>
-            <p>Информация на сайте не является публичной офертой; финальную цену и характеристики товара уточняйте у менеджера интернет-магазина при оформлении заказа.</p>
+            <p>2026 © Treasure Chest. All rights reserved.</p>
+            <p>
+                The information on this website is presented for demonstration purposes.
+                Final product details are confirmed during checkout.
+            </p>
         </div>
     </div>
 </footer>
 
-<a href="#" id="back-to-top" class="back-to-top-btn" aria-label="Вернуться наверх">
+<a href="#" id="back-to-top" class="back-to-top-btn" aria-label="Back to top">
     <i class="fas fa-arrow-up"></i>
 </a>
 {% endblock %}

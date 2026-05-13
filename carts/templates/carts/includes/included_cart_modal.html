@@ -124,19 +124,19 @@
 
         <div class="modal-cart-summary">
             <div class="modal-summary-row">
-                <span>Итого:</span>
+                <span>Total:</span>
                 <strong>{{ carts.total_price }} $</strong>
             </div>
-            <a href="{% url 'carts:cart' %}" class="btn btn-outline-dark mb-2">Перейти в </a>
+            <a href="{% url 'carts:cart' %}" class="btn btn-outline-dark mb-2">Go to </a>
             {% if not order %}
-            <a href="{% url 'orders:create_order' %}" class="btn btn-dark">Оформить заказ</a>
+            <a href="{% url 'orders:create_order' %}" class="btn btn-dark">Place an order</a>
             {% endif %}
         </div>
 
     {% else %}
         <div class="modal-cart-empty">
             <img src="{% static 'deps/icons/cart-x.svg' %}" alt="Пустая корзина" width="80" height="80">
-            <h5>Ваша корзина пуста</h5>
+            <h5>Your basket is empty</h5>
         </div>
     {% endif %}
 

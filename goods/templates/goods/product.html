@@ -23,9 +23,9 @@
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="imageModal1Label">Изображение 1</h5>
+                                                <h5 class="modal-title" id="imageModal1Label">Figure 1</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Закрыть"></button>
+                                                    aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <img src="{{ product.image.url }}"
@@ -37,13 +37,13 @@
                             </div>
                             <!-- Описание товара -->
                             <div class="card-body">
-                                <p class="card-text">Цена: <strong>{{ product.sell_price }} $</strong></p>
+                                <p class="card-text">Price: <strong>{{ product.sell_price }} $</strong></p>
                                 <h5 class="card-title">{{ product.name }}</h5>
                                 <p class="card-text">{{ product.description }}</p>
                                 <a href="{% url 'cart:cart_add' %}" class="btn btn-dark add-to-cart"
                                 data-product-id="{{ product.id }}">
                                 {% csrf_token %}
-                                Добавить в корзину</a>
+                                Add to basket</a>
                             </div>
                         </div>
                     </div>
